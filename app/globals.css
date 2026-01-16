@@ -4,18 +4,20 @@
 
 :root {
   color-scheme: dark;
-  --surface-0: #0a0f16;
-  --surface-1: rgba(120, 150, 185, 0.12);
-  --surface-2: rgba(140, 175, 210, 0.18);
-  --border: rgba(170, 200, 235, 0.18);
-  --text-muted: rgba(255, 255, 255, 0.78);
-  --page-bg: radial-gradient(circle at 18% 16%, rgba(40, 62, 92, 0.35), transparent 55%),
-    radial-gradient(circle at 85% 12%, rgba(28, 46, 76, 0.35), transparent 55%),
-    linear-gradient(160deg, #0b121f, #090f17 70%);
+  --bg-0: #0b1220;
+  --bg-1: #0e1b33;
+  --bg-2: #0b2336;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-strong: rgba(255, 255, 255, 0.1);
+  --border: rgba(255, 255, 255, 0.12);
+  --text-muted: rgba(255, 255, 255, 0.72);
+  --page-bg: radial-gradient(circle at 12% 18%, rgba(36, 211, 197, 0.18), transparent 52%),
+    radial-gradient(circle at 85% 10%, rgba(58, 169, 255, 0.2), transparent 48%),
+    linear-gradient(160deg, rgba(14, 27, 51, 0.85), rgba(11, 18, 32, 0.98));
 }
 
 body {
-  background-color: var(--surface-0);
+  background-color: var(--bg-0);
 }
 
 html {
@@ -29,7 +31,7 @@ html {
 }
 
 ::selection {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(58, 169, 255, 0.35);
 }
 
 @layer components {
@@ -53,15 +55,15 @@ html {
   }
 
   .glass-panel {
-    background: var(--surface-1);
+    background: var(--panel);
     border: 1px solid var(--border);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(14px);
   }
 
   .glass-panel-strong {
-    background: var(--surface-2);
+    background: var(--panel-strong);
     border: 1px solid var(--border);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(16px);
   }
 }
 
