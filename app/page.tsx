@@ -362,7 +362,9 @@ export default function HomePage() {
 
         <footer className="border-t border-white/10 bg-ink/80">
           <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-12 text-sm text-white/60 md:flex-row md:items-center md:justify-between">
-            <p>(c) 2026 AI Sales Executive. All rights reserved.</p>
+            <p>
+              © 2026 AI Sales Executive. All rights reserved. AI Sales Executive Inc.
+            </p>
             <div className="flex flex-wrap gap-4">
               <a href="#" className="hover:text-white">
                 LinkedIn
