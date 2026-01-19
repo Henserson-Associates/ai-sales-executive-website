@@ -372,7 +372,7 @@ export default function HomePage() {
               <a href="/privacy" className="hover:text-white">
                 Privacy
               </a>
-              <a href="#" className="hover:text-white">
+              <a href="/terms" className="hover:text-white">
                 Terms
               </a>
             </div>
