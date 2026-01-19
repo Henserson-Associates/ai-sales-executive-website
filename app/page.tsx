@@ -85,6 +85,59 @@ const pricingServices = [
   "Dedicated success manager"
 ];
 
+const comparisonRows = [
+  {
+    label: "Monthly Cost",
+    ai: "$750 / month",
+    human: "$4,000-$7,000+ / month"
+  },
+  {
+    label: "Ramp-Up Time",
+    ai: "Immediate",
+    human: "1-3 months"
+  },
+  {
+    label: "Hiring Risk",
+    ai: "None",
+    human: "High (recruiting, churn)"
+  },
+  {
+    label: "Consistency",
+    ai: "Always-on, predictable",
+    human: "Varies by individual"
+  },
+  {
+    label: "Scalability",
+    ai: "Instantly add 5-100+",
+    human: "Slow, linear hiring"
+  },
+  {
+    label: "Availability",
+    ai: "24/7 outbound execution",
+    human: "Limited working hours"
+  },
+  {
+    label: "Turnover",
+    ai: "Never quits",
+    human: "High SDR attrition"
+  },
+  {
+    label: "Management Overhead",
+    ai: "Minimal",
+    human: "High (training, coaching)"
+  },
+  {
+    label: "Channel Focus",
+    ai: "LinkedIn-native B2B",
+    human: "Often multi-tasked"
+  },
+  {
+    label: "Cost per Meeting",
+    ai: "Low & predictable",
+    human: "High & variable"
+  }
+];
+
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const pricePerSeat = 750;
@@ -305,6 +358,47 @@ export default function HomePage() {
                     <span className="text-sm font-medium">{audience}</span>
                   </div>
                 ))}
+              </div>
+            </div>
+          </motion.section>
+
+          <motion.section
+            {...motionProps}
+            className="mx-auto max-w-7xl px-6 py-24"
+            id="comparison"
+          >
+            <div className="glass-panel-strong rounded-[32px] p-10">
+              <div className="max-w-3xl">
+                <p className="text-xs uppercase tracking-[0.3em] text-white/50">
+                  Comparison
+                </p>
+                <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white">
+                  AI Sales Executive vs. Traditional Human SDR
+                </h2>
+                <p className="mt-4 text-white/70">
+                  The modern way to scale B2B outbound, with predictable cost and always-on
+                  execution.
+                </p>
+              </div>
+
+              <div className="mt-10 overflow-hidden rounded-3xl border border-white/10">
+                <div className="grid grid-cols-[1.2fr_1fr_1fr] bg-white/5 text-sm font-semibold text-white">
+                  <div className="px-6 py-4 text-white/60">Category</div>
+                  <div className="px-6 py-4">AI Sales Executive</div>
+                  <div className="px-6 py-4">Human SDR</div>
+                </div>
+                <div className="divide-y divide-white/10 text-sm text-white/70">
+                  {comparisonRows.map((row) => (
+                    <div
+                      key={row.label}
+                      className="grid grid-cols-[1.2fr_1fr_1fr] bg-transparent"
+                    >
+                      <div className="px-6 py-4 font-medium text-white">{row.label}</div>
+                      <div className="px-6 py-4">{row.ai}</div>
+                      <div className="px-6 py-4 text-white/60">{row.human}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.section>
