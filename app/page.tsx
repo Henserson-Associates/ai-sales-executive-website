@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -76,21 +76,20 @@ const currency = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0
 });
 
+const pricingServices = [
+  "5 AI Sales Executives",
+  "Daily outreach across LinkedIn",
+  "Custom ICP + offer messaging",
+  "Qualified meetings booked to your calendar",
+  "Weekly performance insights",
+  "Dedicated success manager"
+];
+
 export default function HomePage() {
-  const [quantity, setQuantity] = useState(5);
   const [isLoading, setIsLoading] = useState(false);
   const pricePerSeat = 750;
-
-  const total = useMemo(() => quantity * pricePerSeat, [quantity]);
-
-  const clampQuantity = (value: number) => {
-    if (!Number.isFinite(value)) return 5;
-    return Math.max(5, Math.min(200, Math.round(value)));
-  };
-
-  const handleQuantityChange = (value: number) => {
-    setQuantity(clampQuantity(value));
-  };
+  const baseQuantity = 5;
+  const baseTotal = pricePerSeat * baseQuantity;
 
   const handleCheckout = async () => {
     setIsLoading(true);
@@ -98,7 +97,7 @@ export default function HomePage() {
       const response = await fetch("/api/checkout_sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quantity })
+        body: JSON.stringify({ quantity: baseQuantity })
       });
 
       const data = await response.json();
@@ -315,95 +314,46 @@ export default function HomePage() {
             className="mx-auto max-w-7xl px-6 py-24"
             id="pricing"
           >
-            <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr]">
-              <div>
+            <div className="grid items-start gap-12 lg:justify-items-center">
+              <div className="max-w-2xl text-center">
                 <h2 className="text-4xl font-semibold tracking-tight">Pricing</h2>
-                <p className="mt-4 max-w-xl text-white/70">
+                <p className="mt-4 text-white/70">
                   Start with a minimum of 5 AI Sales Executives. Scale up any time.
                 </p>
-                <div className="glass-panel-strong mt-10 rounded-[32px] p-8">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-white/60">Base price</p>
-                      <p className="text-2xl font-semibold">$750 / month</p>
-                    </div>
-                    <div className="rounded-full border border-white/15 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/60">
-                      Per Executive
-                    </div>
-                  </div>
-                  <div className="mt-8 grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
-                    <div>
-                      <label className="text-xs uppercase tracking-[0.3em] text-white/50">
-                        AI Executives
-                      </label>
-                      <input
-                        type="range"
-                        min={5}
-                        max={200}
-                        value={quantity}
-                        onChange={(event) =>
-                          handleQuantityChange(Number(event.target.value))
-                        }
-                        className="mt-3 w-full accent-teal"
-                      />
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="number"
-                        min={5}
-                        max={200}
-                        value={quantity}
-                        onChange={(event) =>
-                          handleQuantityChange(Number(event.target.value))
-                        }
-                        className="w-24 rounded-xl border border-white/15 bg-ink/60 px-3 py-2 text-center text-lg font-semibold"
-                      />
-                      <span className="text-sm text-white/50">min 5</span>
-                    </div>
-                  </div>
-                  <div className="mt-8 flex flex-wrap items-center justify-between gap-6">
-                    <div>
-                      <p className="text-sm text-white/60">Total Monthly Investment</p>
-                      <p className="text-3xl font-semibold text-teal">
-                        {currency.format(total)}
-                      </p>
-                    </div>
-                    <button
-                      onClick={handleCheckout}
-                      disabled={isLoading}
-                      className="rounded-full bg-teal px-7 py-3.5 text-sm font-semibold text-ink shadow-glow transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
-                    >
-                      {isLoading ? "Redirecting..." : "Purchase Plan"}
-                    </button>
-                  </div>
-                  <p className="mt-4 text-xs text-white/50">
-                    Volume pricing available for larger teams.
-                  </p>
-                </div>
               </div>
-              <div className="glass-panel rounded-[32px] p-8">
-                <div className="flex items-center gap-3">
-                  <ShieldCheck className="h-6 w-6 text-electric" />
-                  <h3 className="text-xl font-semibold">What you get</h3>
+              <div className="glass-panel relative h-fit max-w-xl rounded-[36px] border border-teal/40 p-10 shadow-glow">
+                <div className="absolute -top-4 left-10 rounded-full bg-teal px-4 py-1 text-xs font-semibold uppercase tracking-[0.3em] text-ink">
+                  Most Popular
                 </div>
-                <ul className="mt-8 space-y-5 text-sm text-white/70">
-                  <li className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-4 w-4 text-teal" />
-                    Dedicated AI Executive per account with daily outreach.
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-4 w-4 text-teal" />
-                    Message sequencing tuned to your ICP and offer.
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-4 w-4 text-teal" />
-                    Qualified meetings delivered directly to your calendar.
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-4 w-4 text-teal" />
-                    Weekly performance insights and optimization.
-                  </li>
+                <div className="flex items-center gap-3 text-white/80">
+                  <ShieldCheck className="h-6 w-6 text-teal" />
+                  <span className="text-lg font-semibold">Growth</span>
+                </div>
+                <p className="mt-2 text-sm text-white/60">For scaling outbound teams.</p>
+                <div className="mt-8 flex items-end gap-3">
+                  <span className="text-5xl font-semibold text-white">
+                    {currency.format(baseTotal)}
+                  </span>
+                  <span className="pb-1 text-sm text-white/60">/month</span>
+                </div>
+                <ul className="mt-8 space-y-4 text-sm text-white/70">
+                  {pricingServices.map((service) => (
+                    <li key={service} className="flex items-start gap-3">
+                      <Check className="mt-0.5 h-4 w-4 text-teal" />
+                      <span className="leading-relaxed">{service}</span>
+                    </li>
+                  ))}
                 </ul>
+                <button
+                  onClick={handleCheckout}
+                  disabled={isLoading}
+                  className="mt-10 w-full rounded-full bg-teal px-7 py-3.5 text-sm font-semibold text-ink shadow-glow transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isLoading ? "Redirecting..." : "Start Free Trial"}
+                </button>
+              </div>
+              <div className="glass-panel max-w-xl rounded-3xl border border-white/10 px-6 py-4 text-center text-sm text-white/70">
+                14-day free trial. Cancel anytime. No long-term contracts.
               </div>
             </div>
           </motion.section>
