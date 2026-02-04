@@ -4,16 +4,16 @@
 
 :root {
   color-scheme: dark;
-  --bg-0: #0b1220;
-  --bg-1: #0e1b33;
-  --bg-2: #0b2336;
-  --panel: rgba(255, 255, 255, 0.06);
-  --panel-strong: rgba(255, 255, 255, 0.1);
-  --border: rgba(255, 255, 255, 0.12);
-  --text-muted: rgba(255, 255, 255, 0.72);
-  --page-bg: radial-gradient(circle at 12% 18%, rgba(36, 211, 197, 0.18), transparent 52%),
-    radial-gradient(circle at 85% 10%, rgba(58, 169, 255, 0.2), transparent 48%),
-    linear-gradient(160deg, rgba(14, 27, 51, 0.85), rgba(11, 18, 32, 0.98));
+  --bg-0: #05070d;
+  --bg-1: #060d1b;
+  --bg-2: #0a1426;
+  --panel: rgba(7, 12, 22, 0.72);
+  --panel-strong: rgba(10, 16, 30, 0.82);
+  --border: rgba(118, 170, 255, 0.16);
+  --text-muted: rgba(220, 230, 255, 0.7);
+  --page-bg: radial-gradient(circle at 8% 12%, rgba(92, 224, 255, 0.14), transparent 55%),
+    radial-gradient(circle at 88% 18%, rgba(114, 168, 255, 0.18), transparent 52%),
+    linear-gradient(160deg, rgba(6, 13, 27, 0.92), rgba(5, 7, 13, 0.98));
 }
 
 body {
@@ -31,7 +31,7 @@ html {
 }
 
 ::selection {
-  background: rgba(58, 169, 255, 0.35);
+  background: rgba(92, 224, 255, 0.3);
 }
 
 @layer components {
@@ -46,10 +46,10 @@ html {
     content: "";
     position: absolute;
     inset: 0;
-    background-image: linear-gradient(transparent 0 97%, rgba(255, 255, 255, 0.04) 100%),
-      linear-gradient(90deg, transparent 0 97%, rgba(255, 255, 255, 0.04) 100%);
+    background-image: linear-gradient(transparent 0 97%, rgba(118, 170, 255, 0.06) 100%),
+      linear-gradient(90deg, transparent 0 97%, rgba(118, 170, 255, 0.06) 100%);
     background-size: 64px 64px;
-    opacity: 0.25;
+    opacity: 0.16;
     pointer-events: none;
     z-index: 0;
   }

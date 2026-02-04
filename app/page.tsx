@@ -65,6 +65,34 @@ const audiences = [
   "Professional Services"
 ];
 
+const caseStudies = [
+  {
+    company: "Nimbus Analytics",
+    industry: "B2B SaaS",
+    outcome: "18 meetings in 21 days",
+    detail: "Swapped two SDRs for AI outbound and doubled reply rates without extra headcount."
+  },
+  {
+    company: "Ironforge Systems",
+    industry: "IT Services",
+    outcome: "4 new verticals launched",
+    detail: "Targeted campaigns across four industries with tailored messaging and faster ramp time."
+  },
+  {
+    company: "Vertex Consulting",
+    industry: "Professional Services",
+    outcome: "31% lift in qualified replies",
+    detail: "Positioning refresh + LinkedIn sequencing delivered higher quality discovery calls."
+  }
+];
+
+const results = [
+  { value: "24/7", label: "always-on outbound" },
+  { value: "18%", label: "avg. reply rate" },
+  { value: "12k+", label: "meetings booked" },
+  { value: "95%", label: "inbox placement" }
+];
+
 const motionProps = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -184,20 +212,23 @@ export default function HomePage() {
             </div>
             <nav className="hidden items-center gap-8 text-sm text-white/70 md:flex">
               <a href="#how" className="hover:text-white">
-                How it Works
+                How It Works
+              </a>
+              <a href="#case-studies" className="hover:text-white">
+                Case Studies
+              </a>
+              <a href="#results" className="hover:text-white">
+                Results
               </a>
               <a href="#pricing" className="hover:text-white">
                 Pricing
-              </a>
-              <a href="#faq" className="hover:text-white">
-                FAQ
               </a>
             </nav>
             <a
               href="#pricing"
               className="rounded-full bg-teal px-6 py-2.5 text-sm font-semibold text-ink shadow-glow transition hover:-translate-y-0.5"
             >
-              Start Scaling
+              Get Started
             </a>
           </div>
         </header>
@@ -328,6 +359,70 @@ export default function HomePage() {
                   <p className="mt-2 text-sm text-white/70">{step.description}</p>
                 </div>
               ))}
+            </div>
+          </motion.section>
+
+          <motion.section
+            {...motionProps}
+            className="mx-auto max-w-7xl px-6 py-24"
+            id="case-studies"
+          >
+            <div className="mb-12 flex items-center justify-between">
+              <h2 className="text-4xl font-semibold tracking-tight">Case Studies</h2>
+              <span className="hidden text-sm uppercase tracking-[0.3em] text-white/40 md:block">
+                Proven Outcomes
+              </span>
+            </div>
+            <div className="grid gap-8 lg:grid-cols-3">
+              {caseStudies.map((study) => (
+                <div
+                  key={study.company}
+                  className="glass-panel flex h-full flex-col gap-6 rounded-3xl p-8"
+                >
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.3em] text-white/50">
+                      {study.industry}
+                    </p>
+                    <h3 className="mt-3 text-xl font-semibold">{study.company}</h3>
+                  </div>
+                  <p className="text-lg font-semibold text-teal">{study.outcome}</p>
+                  <p className="text-sm text-white/70">{study.detail}</p>
+                </div>
+              ))}
+            </div>
+          </motion.section>
+
+          <motion.section
+            {...motionProps}
+            className="mx-auto max-w-7xl px-6 py-24"
+            id="results"
+          >
+            <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+              <div>
+                <h2 className="text-4xl font-semibold tracking-tight">Results</h2>
+                <p className="mt-4 max-w-xl text-white/70">
+                  Consistent, high-volume outbound execution with measurable gains in reply rates,
+                  meetings booked, and inbox performance.
+                </p>
+                <div className="mt-8 flex flex-wrap gap-4 text-xs uppercase tracking-[0.3em] text-white/50">
+                  <span>Omnichannel</span>
+                  <span>Reply handling</span>
+                  <span>Continuous optimization</span>
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {results.map((result) => (
+                  <div
+                    key={result.label}
+                    className="glass-panel rounded-3xl p-6 text-center"
+                  >
+                    <div className="text-3xl font-semibold text-teal">{result.value}</div>
+                    <p className="mt-2 text-xs uppercase tracking-[0.3em] text-white/60">
+                      {result.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.section>
 
