@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -56,24 +56,24 @@ const valueProps = [
 
 const steps = [
   {
-    title: "30-Min Kickoff Meeting",
+    title: "Strategic Onboarding",
     description:
-      "We align on your business goals, Ideal Customer Profile (ICP), and unique value proposition."
+      "We deep-dive into your business to define your Ideal Customer Profile (ICP) and craft highly-personalized multi-channel strategies."
   },
   {
-    title: "Deploy AI Sales Reps",
+    title: "Infrastructure Deployment",
     description:
-      "Our AI automatically starts daily Cold Emailing and LinkedIn personalized outreach."
+      "We set up dedicated sending domains, perform professional email warming, and synchronize LinkedIn profiles to ensure maximum deliverability and safety."
   },
   {
-    title: "Autopilot Meeting Booking",
+    title: "AI-Powered Execution",
     description:
-      "Qualified prospects are guided by AI to book directly into your Google or Outlook calendar."
+      "Our AI agents launch hyper-personalized campaigns, adapting messaging in real-time based on prospect behavior and intent signals."
   },
   {
-    title: "Scale on Demand",
+    title: "Qualified Lead Delivery",
     description:
-      "We monitor performance, optimize scripts, and add more execution seats as you grow."
+      "High-intent leads are filtered by AI and synced to your existing workflow (CRM/Slack) instantly."
   }
 ];
 
@@ -110,6 +110,17 @@ const comparison = {
     "Automated research, personalization & follow-ups"
   ]
 };
+
+const comparisonRows = [
+  { label: "Monthly cost", traditional: "$6k-$9k per SDR", ai: "From $3.5k for 5 AI seats" },
+  { label: "Time to productivity", traditional: "60-90 days", ai: "7-10 days" },
+  { label: "Working hours", traditional: "40 hrs/week", ai: "168 hrs/week" },
+  { label: "Daily outreach", traditional: "40-60 contacts", ai: "300-500 contacts" },
+  { label: "Management time", traditional: "5-10 hrs/week", ai: "Near-zero" },
+  { label: "Consistency", traditional: "Varies by rep", ai: "Consistent, tracked" }
+];
+
+const stepTimeline = ["Day 1", "Days 2-3", "Day 7", "Daily / Ongoing"];
 
 const agentCapabilities = [
   {
@@ -215,7 +226,7 @@ const UIMockup = () => (
                 <div className="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
               </div>
               <div className="ml-4 h-6 w-32 bg-white/5 rounded-full flex items-center px-3 text-[10px] text-white/40">
-                AI SDR  -  Outbound Engine
+                AI Sales Executives
               </div>
             </div>
             <div className="px-3 py-1 rounded-full bg-teal/10 border border-teal/20 text-[10px] text-teal flex items-center gap-1">
@@ -251,7 +262,7 @@ const UIMockup = () => (
                 </div>
                 <div>
                   <div className="text-xs text-white/80 mb-1">Positive Replies</div>
-                  <div className="text-[11px] text-white/60">"Sounds interesting"  -  "Lets talk"  -  "Send more details"</div>
+                  <div className="text-[11px] text-white/60">"Sounds interesting"  -  "Let's talk"  -  "Send more details"</div>
                 </div>
               </div>
               <div className="text-right">
@@ -332,12 +343,15 @@ export default function HomePage() {
 
         <header className="sticky top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-xl">
           <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <div className="flex items-center gap-2.5 text-xl font-bold tracking-tight text-white">
+            <a
+              href="/"
+              className="flex items-center gap-2.5 text-xl font-bold tracking-tight text-white hover:text-teal transition-colors"
+            >
               <div className="bg-teal p-1.5 rounded-lg">
                 <Sparkles className="h-5 w-5 text-ink" />
               </div>
               Leadnexa.Ai
-            </div>
+            </a>
             <nav className="hidden items-center gap-10 text-sm font-medium text-white/60 md:flex">
               <a href="#how" className="hover:text-teal transition-colors">
                 How it works
@@ -347,6 +361,9 @@ export default function HomePage() {
               </a>
               <a href="#comparison" className="hover:text-teal transition-colors">
                 Why AI Agents
+              </a>
+              <a href="#integrations" className="hover:text-teal transition-colors">
+                Integrations
               </a>
               <a href="#pricing" className="hover:text-teal transition-colors">
                 Pricing
@@ -391,8 +408,8 @@ export default function HomePage() {
                 </span>
               </h1>
               <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/60 md:text-xl">
-                Deploy AI sales agents that prospect, write Cold Email & LinkedIn messages, handle replies, and
-                book qualified meetings for your team without hiring a single SDR.
+                AI sales agents that prospect, write cold email and LinkedIn messages, handle replies, and
+                book qualified meetings without hiring a single SDR.
               </p>
               <div className="mt-10 grid gap-3 text-sm text-white/50">
                 <div className="flex items-center gap-2">
@@ -405,7 +422,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-teal" />
-                  <span>Typical clients see 2 3x more meetings with lower outbound costs.</span>
+                  <span>Typical clients see 2-3x more meetings with lower outbound costs.</span>
                 </div>
               </div>
               <div className="mt-12 flex flex-wrap gap-5">
@@ -413,7 +430,7 @@ export default function HomePage() {
                   href="#pricing"
                   className="group inline-flex items-center gap-2 rounded-full bg-teal px-8 py-4 text-base font-bold text-ink shadow-glow transition hover:-translate-y-1"
                 >
-                  Start Your Free Trial
+                  Book a Demo
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </a>
                 <div className="flex -space-x-3 items-center ml-2">
@@ -434,37 +451,83 @@ export default function HomePage() {
             <UIMockup />
           </motion.section>
 
-          <TrustedLogos />
+          <div className="mt-6 md:mt-10">
+            <TrustedLogos />
+          </div>
 
-          {/* Bento Grid: Why Us */}
-          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 py-32" id="why">
-            <div className="mb-16 text-center">
-              <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">Reinvent Your Outbound</h2>
-              <p className="mt-4 text-white/50 text-lg">
-                Ditch expensive hiring and unpredictable performance. Let AI Agents own the top of funnel.
+          {/* Comparison: AI Agents vs Traditional SDRs */}
+          <motion.section
+            {...motionProps}
+            className="mx-auto max-w-7xl px-6 pt-16 pb-32"
+            id="comparison"
+          >
+            <div className="mb-12 text-center">
+              <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">
+                Why AI Agents Beat Traditional SDR Teams
+              </h2>
+              <p className="mt-4 text-white/50 text-lg max-w-2xl mx-auto">
+                Keep the human closers. Let AI handle the repetitive, high-volume work of prospecting, outreach
+                and qualification.
               </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2">
-              {valueProps.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.title}
-                    className={`${item.size} glass-panel rounded-[32px] p-10 hover:border-teal/30 transition-all duration-500 group`}
-                  >
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-teal/10 transition-colors">
-                      <Icon className="h-6 w-6 text-teal" />
-                    </div>
-                    <h3 className="mt-8 text-2xl font-bold text-white">{item.title}</h3>
-                    <p className="mt-4 text-white/50 leading-relaxed">{item.description}</p>
+            <div className="mx-auto max-w-5xl glass-panel rounded-[36px] border border-teal/30 bg-ink/80 shadow-[0_0_80px_rgba(0,0,0,0.45)] overflow-hidden">
+              <div className="grid lg:grid-cols-[1fr_auto_1fr]">
+                <div className="p-8 md:p-10">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Users className="w-5 h-5 text-white/60" />
+                    <span className="text-xs font-semibold text-white/60 uppercase tracking-[0.2em]">
+                      Traditional SDR Team
+                    </span>
                   </div>
-                );
-              })}
+                  <div className="space-y-5 text-sm text-white/60">
+                    {comparisonRows.map((row) => (
+                      <div key={row.label} className="flex items-center justify-between gap-6">
+                        <span className="text-white/40">{row.label}</span>
+                        <span className="text-white/70 font-semibold">{row.traditional}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="hidden lg:block w-px bg-gradient-to-b from-transparent via-teal/50 to-transparent" />
+                <div className="p-8 md:p-10 bg-teal/5 border-t border-teal/20 lg:border-t-0 lg:border-l">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Bot className="w-5 h-5 text-teal" />
+                    <span className="text-xs font-semibold text-teal uppercase tracking-[0.2em]">
+                      Leadnexa AI Agents
+                    </span>
+                  </div>
+                  <div className="space-y-5 text-sm">
+                    {comparisonRows.map((row) => (
+                      <div key={row.label} className="flex items-center justify-between gap-6">
+                        <span className="text-white/40">{row.label}</span>
+                        <span className="text-teal font-semibold">{row.ai}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { value: "24/7", label: "Always on outreach" },
+                { value: "2-3x", label: "More meetings" },
+                { value: "7-10 days", label: "Launch window" },
+                { value: "-30%", label: "Tooling cost reduction" }
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="glass-panel rounded-3xl p-6 text-center border-white/5 hover:border-teal/30 transition-colors"
+                >
+                  <div className="text-2xl font-bold text-teal mb-2">{item.value}</div>
+                  <p className="text-xs uppercase tracking-[0.3em] text-white/40 font-bold">{item.label}</p>
+                </div>
+              ))}
             </div>
           </motion.section>
 
           {/* Case Studies Section */}
-          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 py-40" id="case-studies">
+          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 pt-32 pb-16" id="case-studies">
             <div className="mb-16 text-center max-w-3xl mx-auto">
               <p className="text-xs font-semibold tracking-[0.3em] text-teal mb-4">CASE STUDIES</p>
               <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl mb-4">
@@ -548,117 +611,8 @@ export default function HomePage() {
             </div>
           </motion.section>
 
-          {/* Comparison: AI Agents vs Traditional SDRs */}
-          <motion.section
-            {...motionProps}
-            className="mx-auto max-w-7xl px-6 pb-32"
-            id="comparison"
-          >
-            <div className="mb-12 text-center">
-              <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">
-                Why AI Agents Beat Traditional SDR Teams
-              </h2>
-              <p className="mt-4 text-white/50 text-lg max-w-2xl mx-auto">
-                Keep the human closers. Let AI handle the repetitive, high-volume work of prospecting, outreach
-                and qualification.
-              </p>
-            </div>
-            <div className="grid gap-8 lg:grid-cols-2">
-              <div className="glass-panel rounded-[32px] p-10 border-white/10 bg-white/[0.02]">
-                <div className="flex items-center gap-3 mb-6">
-                  <Users className="w-6 h-6 text-white/60" />
-                  <span className="text-sm font-semibold text-white/60 uppercase tracking-[0.2em]">
-                    Traditional SDR Team
-                  </span>
-                </div>
-                <ul className="space-y-3 text-sm text-white/60">
-                  {comparison.traditional.map((item) => (
-                    <li key={item} className="flex gap-2">
-                      <span className="mt-1 w-1.5 h-1.5 rounded-full bg-white/20" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="glass-panel rounded-[32px] p-10 border-teal/40 bg-teal/5">
-                <div className="flex items-center gap-3 mb-6">
-                  <Bot className="w-6 h-6 text-teal" />
-                  <span className="text-sm font-semibold text-teal uppercase tracking-[0.2em]">
-                    Leadnexa AI Agents
-                  </span>
-                </div>
-                <ul className="space-y-3 text-sm text-white/80">
-                  {comparison.ai.map((item) => (
-                    <li key={item} className="flex gap-2">
-                      <span className="mt-1 w-1.5 h-1.5 rounded-full bg-teal/60" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </motion.section>
-
-          {/* Process Section */}
-          <motion.section
-            {...motionProps}
-            className="mx-auto max-w-7xl px-6 py-32 bg-white/[0.02] rounded-[48px] border border-white/5"
-            id="how"
-          >
-            <div className="grid lg:grid-cols-2 gap-20 items-center">
-              <div>
-                <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">Zero to Meeting in 4 Steps</h2>
-                <p className="mt-6 text-white/60 text-lg leading-relaxed">
-                  Our AI agents don't just send messages. They learn your product, identify intent, and handle the
-                  back-and-forth scheduling.
-                </p>
-                <div className="mt-10 space-y-8">
-                  {steps.map((step, i) => (
-                    <div key={step.title} className="flex gap-6">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full border border-teal/30 bg-teal/5 flex items-center justify-center text-teal font-bold text-sm">
-                        0{i + 1}
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-bold text-white">{step.title}</h4>
-                        <p className="mt-2 text-white/40 text-sm leading-relaxed">{step.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="relative">
-                <div className="absolute inset-0 bg-teal/20 blur-[100px] rounded-full"></div>
-                <div className="relative glass-panel rounded-[40px] p-12 flex flex-col gap-6 border-white/10">
-                  <div className="flex items-center gap-3 mb-2">
-                    <Brain className="w-6 h-6 text-teal" />
-                    <span className="text-xs uppercase tracking-[0.2em] text-white/50 font-semibold">
-                      What Our AI Agents Actually Do
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    {agentCapabilities.map((capability) => {
-                      const Icon = capability.icon;
-                      return (
-                        <div
-                          key={capability.title}
-                          className="rounded-3xl bg-white/5 flex flex-col items-start justify-start p-5 border border-white/5 hover:bg-white/10 transition-colors"
-                        >
-                          <Icon className="h-6 w-6 text-teal mb-3" />
-                          <p className="text-xs font-semibold text-white mb-1">{capability.title}</p>
-                          <p className="text-[11px] text-white/60 leading-relaxed">
-                            {capability.description}
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-
           {/* Results Stats */}
-          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 py-24">
+          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 pt-8 pb-24">
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {results.map((result) => (
                 <div
@@ -667,6 +621,43 @@ export default function HomePage() {
                 >
                   <div className="text-5xl font-bold text-teal mb-4">{result.value}</div>
                   <p className="text-xs uppercase tracking-[0.3em] text-white/40 font-bold">{result.label}</p>
+                </div>
+              ))}
+            </div>
+          </motion.section>
+
+          {/* Process Section */}
+          <motion.section
+            {...motionProps}
+            className="scroll-mt-28 mx-auto max-w-7xl px-6 py-32 bg-white/[0.02] rounded-[48px] border border-white/5"
+            id="how"
+          >
+            <div className="text-center max-w-3xl mx-auto">
+              <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">Zero to Meeting in 4 Steps</h2>
+              <p className="mt-6 text-white/60 text-lg leading-relaxed">
+                A simple, repeatable system to launch, run, and scale outbound without extra headcount.
+              </p>
+            </div>
+            <div className="mt-12 hidden lg:grid grid-cols-4 gap-6 lg:gap-10">
+              {steps.map((_, i) => (
+                <div key={`step-ui-${i}`} className="flex items-center justify-start gap-3">
+                  <div className="w-11 h-11 rounded-full border-2 border-teal/50 bg-ink/70 flex items-center justify-center text-teal font-bold">
+                    0{i + 1}
+                  </div>
+                  <div className="text-xs uppercase tracking-[0.2em] text-white/50 font-semibold">
+                    {stepTimeline[i]}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+              {steps.map((step, i) => (
+                <div
+                  key={step.title}
+                  className="glass-panel rounded-[28px] p-6 border-white/10 hover:border-teal/30 transition-colors"
+                >
+                  <h4 className="text-base font-bold text-white">{step.title}</h4>
+                  <p className="mt-2 text-white/50 text-sm leading-relaxed">{step.description}</p>
                 </div>
               ))}
             </div>
@@ -681,14 +672,14 @@ export default function HomePage() {
                 </h2>
                 <p className="text-white/60 text-lg max-w-xl mb-8">
                   Leadnexa helps B2B teams move beyond manual prospecting and inconsistent outbound performance.
-                  Heres what it looks like in practice.
+                  Here's what it looks like in practice.
                 </p>
                 <div className="space-y-6">
                   {testimonials.map((t) => (
                     <div key={t.name} className="glass-panel rounded-3xl p-6 border-white/10">
                       <p className="text-sm text-white/80 leading-relaxed mb-3">{t.quote}</p>
                       <p className="text-xs text-white/40 font-semibold tracking-[0.2em] uppercase">
-                        {t.name} b7 {t.detail}
+                        {t.name} | {t.detail}
                       </p>
                     </div>
                   ))}
@@ -705,7 +696,7 @@ export default function HomePage() {
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="rounded-2xl bg-ink/60 border border-teal/30 p-4">
                       <div className="text-xs text-white/50 mb-1">New meetings</div>
-                      <div className="text-2xl font-bold text-white">30 50</div>
+                      <div className="text-2xl font-bold text-white">30-50</div>
                       <div className="text-[11px] text-white/40">for a mid-market B2B sales team</div>
                     </div>
                     <div className="rounded-2xl bg-ink/60 border border-teal/30 p-4">
@@ -729,6 +720,67 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </motion.section>
+
+          {/* Integrations */}
+          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 py-24" id="integrations">
+            <div className="mb-12 text-center max-w-3xl mx-auto">
+              <p className="text-xs font-semibold tracking-[0.3em] text-teal mb-4">INTEGRATIONS</p>
+              <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl mb-4">
+                Works With Your Stack
+              </h2>
+              <p className="text-white/60 text-lg">
+                Connects to the tools your team already uses for email, CRM, and scheduling.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {["Gmail", "Outlook", "HubSpot", "Salesforce", "Calendly", "Slack", "Apollo", "Zapier"].map((tool) => (
+                <div
+                  key={tool}
+                  className="glass-panel rounded-2xl p-6 border-white/10 text-center text-sm text-white/70 hover:border-teal/30 transition-colors"
+                >
+                  {tool}
+                </div>
+              ))}
+            </div>
+          </motion.section>
+
+          {/* FAQ */}
+          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 py-32">
+            <div className="mb-12 text-center max-w-3xl mx-auto">
+              <p className="text-xs font-semibold tracking-[0.3em] text-teal mb-4">FAQ</p>
+              <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl mb-4">
+                Common Questions
+              </h2>
+              <p className="text-white/60 text-lg">
+                Clear answers on deliverability, ramp time, and how the agents work.
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2">
+              {[
+                {
+                  q: "How do you protect deliverability?",
+                  a: "We warm domains, throttle volumes, rotate inboxes, and monitor engagement to protect sender reputation."
+                },
+                {
+                  q: "How fast can we go live?",
+                  a: "Most teams launch in 7-10 days after a kickoff and ICP alignment call."
+                },
+                {
+                  q: "Do you write and optimize messaging?",
+                  a: "Yes. We create multi-variant sequences and continuously improve based on reply and meeting rates."
+                },
+                {
+                  q: "Can it connect to our CRM?",
+                  a: "Yes. We can sync to HubSpot or Salesforce and route qualified meetings into your calendar."
+                }
+              ].map((item) => (
+                <div key={item.q} className="glass-panel rounded-3xl p-6 border-white/10">
+                  <p className="text-sm font-semibold text-white mb-2">{item.q}</p>
+                  <p className="text-sm text-white/60 leading-relaxed">{item.a}</p>
+                </div>
+              ))}
             </div>
           </motion.section>
 
@@ -759,6 +811,9 @@ export default function HomePage() {
                 <span className="text-7xl font-bold text-white tracking-tighter">${baseTotal}</span>
                 <span className="pb-2 text-white/40 font-medium">/ month</span>
               </div>
+              <p className="text-sm text-white/50 mb-8">
+                Starting at ${baseTotal}/month. Typically less than the fully loaded cost of one SDR.
+              </p>
               <div className="grid md:grid-cols-2 gap-x-12 gap-y-6 mb-12">
                 {pricingServices.map((service) => (
                   <div key={service} className="flex items-start gap-3">
@@ -777,7 +832,7 @@ export default function HomePage() {
                 {isLoading ? "Redirecting..." : "Start 14-Day Free Trial"}
               </button>
               <p className="text-center mt-6 text-white/30 text-xs font-medium uppercase tracking-widest">
-                No Credit Card Required b7 Cancel Anytime b7 Deploy Instantly
+                No Credit Card Required | Cancel Anytime | Deploy Instantly
               </p>
             </div>
           </motion.section>
@@ -841,7 +896,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-white/30 uppercase tracking-[0.2em] font-bold">
-              <p>© 2026 Leadnexa.Ai Inc. All rights reserved.</p>
+              <p>(c) 2026 Leadnexa.Ai Inc. All rights reserved.</p>
               <div className="flex gap-8">
                 <a href="/privacy" className="hover:text-white">
                   Privacy Policy
