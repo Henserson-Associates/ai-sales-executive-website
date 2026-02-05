@@ -97,7 +97,7 @@ const pricingServices = [
 const comparison = {
   traditional: [
     "Salary, bonuses, benefits & tooling for each SDR",
-    "3–6 months ramp time before full productivity",
+    "3-6 months ramp time before full productivity",
     "Works 8 hours a day, Monday to Friday",
     "High turnover, constant hiring & training",
     "Manual list building and copywriting"
@@ -143,19 +143,19 @@ const testimonials = [
     quote:
       "Leadnexa's AI Agents replaced what used to be an entire SDR pod. In the first 90 days we added over 40 qualified demos to our pipeline.",
     name: "Growth Lead, B2B SaaS Company",
-    detail: "Series A · North America"
+    detail: "Series A  -  North America"
   },
   {
     quote:
       "We cut outbound tooling costs by ~30% while increasing meetings by 2.3x. The team now spends time on closing, not chasing replies.",
     name: "VP Sales, IT Services Provider",
-    detail: "Mid-market · Global"
+    detail: "Mid-market  -  Global"
   },
   {
     quote:
       "The AI Agent understands our value prop better than most new hires. Ramp time went from months to days.",
     name: "Founder, Marketing Agency",
-    detail: "10–50 employees"
+    detail: "10-50 employees"
   }
 ];
 
@@ -215,7 +215,7 @@ const UIMockup = () => (
                 <div className="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
               </div>
               <div className="ml-4 h-6 w-32 bg-white/5 rounded-full flex items-center px-3 text-[10px] text-white/40">
-                AI SDR · Outbound Engine
+                AI SDR  -  Outbound Engine
               </div>
             </div>
             <div className="px-3 py-1 rounded-full bg-teal/10 border border-teal/20 text-[10px] text-teal flex items-center gap-1">
@@ -235,7 +235,7 @@ const UIMockup = () => (
                 </div>
                 <div>
                   <div className="text-xs text-white/40 mb-1">Cold Emails Today</div>
-                  <div className="text-xs text-white/30">Multi-variant sequence · ICP: SaaS</div>
+                  <div className="text-xs text-white/30">Multi-variant sequence  -  ICP: SaaS</div>
                 </div>
               </div>
               <div className="text-right">
@@ -251,7 +251,7 @@ const UIMockup = () => (
                 </div>
                 <div>
                   <div className="text-xs text-white/80 mb-1">Positive Replies</div>
-                  <div className="text-[11px] text-white/60">"Sounds interesting" · "Lets talk" · "Send more details"</div>
+                  <div className="text-[11px] text-white/60">"Sounds interesting"  -  "Lets talk"  -  "Send more details"</div>
                 </div>
               </div>
               <div className="text-right">
@@ -299,7 +299,7 @@ const UIMockup = () => (
       </div>
       <div className="space-y-2 text-[11px] text-white/70">
         <div className="flex gap-2 items-start">
-          <div className="px-2 py-1 rounded-full bg-teal/20 text-[10px] text-teal font-semibold">Ava · SDR Agent</div>
+          <div className="px-2 py-1 rounded-full bg-teal/20 text-[10px] text-teal font-semibold">Ava  -  SDR Agent</div>
           <div className="flex-1 px-3 py-2 rounded-2xl bg-white/5 border border-white/10">
             Drafted 37 new intros for UK SaaS CEOs. Avg personalization score: 92%.
           </div>
