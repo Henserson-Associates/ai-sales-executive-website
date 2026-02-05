@@ -251,7 +251,7 @@ const UIMockup = () => (
                 </div>
                 <div>
                   <div className="text-xs text-white/80 mb-1">Positive Replies</div>
-                  <div className="text-[11px] text-white/60">"Sounds interesting"  -  "Lets talk"  -  "Send more details"</div>
+                  <div className="text-[11px] text-white/60">"Sounds interesting"  -  "Lets talk"  -  "Send more details"</div>
                 </div>
               </div>
               <div className="text-right">
@@ -392,7 +392,7 @@ export default function HomePage() {
               </h1>
               <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/60 md:text-xl">
                 Deploy AI sales agents that prospect, write Cold Email & LinkedIn messages, handle replies, and
-                book qualified meetings for your team  without hiring a single SDR.
+                book qualified meetings for your team without hiring a single SDR.
               </p>
               <div className="mt-10 grid gap-3 text-sm text-white/50">
                 <div className="flex items-center gap-2">
@@ -405,7 +405,7 @@ export default function HomePage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-teal" />
-                  <span>Typical clients see 2 3x more meetings with lower outbound costs.</span>
+                  <span>Typical clients see 2 3x more meetings with lower outbound costs.</span>
                 </div>
               </div>
               <div className="mt-12 flex flex-wrap gap-5">
@@ -647,14 +647,14 @@ export default function HomePage() {
                 </h2>
                 <p className="text-white/60 text-lg max-w-xl mb-8">
                   Leadnexa helps B2B teams move beyond manual prospecting and inconsistent outbound performance.
-                  Heres what it looks like in practice.
+                  Heres what it looks like in practice.
                 </p>
                 <div className="space-y-6">
                   {testimonials.map((t) => (
                     <div key={t.name} className="glass-panel rounded-3xl p-6 border-white/10">
-                      <p className="text-sm text-white/80 leading-relaxed mb-3">{t.quote}</p>
+                      <p className="text-sm text-white/80 leading-relaxed mb-3">{t.quote}</p>
                       <p className="text-xs text-white/40 font-semibold tracking-[0.2em] uppercase">
-                        {t.name}  b7 {t.detail}
+                        {t.name} b7 {t.detail}
                       </p>
                     </div>
                   ))}
@@ -671,7 +671,7 @@ export default function HomePage() {
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="rounded-2xl bg-ink/60 border border-teal/30 p-4">
                       <div className="text-xs text-white/50 mb-1">New meetings</div>
-                      <div className="text-2xl font-bold text-white">30 50</div>
+                      <div className="text-2xl font-bold text-white">30 50</div>
                       <div className="text-[11px] text-white/40">for a mid-market B2B sales team</div>
                     </div>
                     <div className="rounded-2xl bg-ink/60 border border-teal/30 p-4">
@@ -743,7 +743,7 @@ export default function HomePage() {
                 {isLoading ? "Redirecting..." : "Start 14-Day Free Trial"}
               </button>
               <p className="text-center mt-6 text-white/30 text-xs font-medium uppercase tracking-widest">
-                No Credit Card Required  b7 Cancel Anytime  b7 Deploy Instantly
+                No Credit Card Required b7 Cancel Anytime b7 Deploy Instantly
               </p>
             </div>
           </motion.section>
