@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -15,7 +15,10 @@ import {
   Globe,
   BarChart3,
   MessageSquare,
-  Lock
+  Lock,
+  Brain,
+  Bot,
+  Activity
 } from "lucide-react";
 
 // --- Data Definitions ---
@@ -23,25 +26,29 @@ import {
 const valueProps = [
   {
     title: "Zero Hiring Needed",
-    description: "Replace high-cost SDR teams without the overhead of salaries, benefits, or turnover.",
+    description:
+      "Replace high-cost SDR teams without the overhead of salaries, benefits, or turnover.",
     icon: Users,
     size: "col-span-1 md:col-span-1"
   },
   {
     title: "Predictable Lead Flow",
-    description: "Our AI agents work 24/7 to ensure your sales pipeline is always filled with high-quality leads.",
+    description:
+      "Our AI agents work 24/7 to ensure your sales pipeline is always filled with high-quality leads.",
     icon: TrendingUp,
     size: "col-span-1 md:col-span-1"
   },
   {
     title: "Infinite Scalability",
-    description: "Scale from 5 to 100+ AI sales reps instantly based on your business demand.",
+    description:
+      "Scale from 5 to 100+ AI sales reps instantly based on your business demand.",
     icon: Zap,
     size: "col-span-1 md:col-span-1"
   },
   {
     title: "B2B Native Intelligence",
-    description: "Built for Email + LinkedIn decision-makers, understanding the nuances of professional outreach.",
+    description:
+      "Built for Email + LinkedIn decision-makers, understanding the nuances of professional outreach.",
     icon: ShieldCheck,
     size: "col-span-1 md:col-span-1"
   }
@@ -50,25 +57,29 @@ const valueProps = [
 const steps = [
   {
     title: "30-Min Kickoff Meeting",
-    description: "We align on your business goals, Ideal Customer Profile (ICP), and unique value proposition."
+    description:
+      "We align on your business goals, Ideal Customer Profile (ICP), and unique value proposition."
   },
   {
     title: "Deploy AI Sales Reps",
-    description: "Our AI automatically starts daily Cold Emailing and LinkedIn personalized outreach."
+    description:
+      "Our AI automatically starts daily Cold Emailing and LinkedIn personalized outreach."
   },
   {
     title: "Autopilot Meeting Booking",
-    description: "Qualified prospects are guided by AI to book directly into your Google or Outlook calendar."
+    description:
+      "Qualified prospects are guided by AI to book directly into your Google or Outlook calendar."
   },
   {
     title: "Scale on Demand",
-    description: "We monitor performance, optimize scripts, and add more execution seats as you grow."
+    description:
+      "We monitor performance, optimize scripts, and add more execution seats as you grow."
   }
 ];
 
 const results = [
   { value: "24/7", label: "Outbound Execution" },
-  { value: "18%", label: "Average Reply Rate" },
+  { value: "18%+", label: "Avg. Reply Rate" },
   { value: "12k+", label: "Meetings Booked" },
   { value: "95%", label: "Inbox Deliverability" }
 ];
@@ -83,6 +94,71 @@ const pricingServices = [
   "Dedicated Success Manager"
 ];
 
+const comparison = {
+  traditional: [
+    "Salary, bonuses, benefits & tooling for each SDR",
+    "3–6 months ramp time before full productivity",
+    "Works 8 hours a day, Monday to Friday",
+    "High turnover, constant hiring & training",
+    "Manual list building and copywriting"
+  ],
+  ai: [
+    "Pay per AI Agent seat with predictable pricing",
+    "Deploy in days with battle-tested playbooks",
+    "Runs 24/7 across time zones without burnout",
+    "Performance improves with every campaign",
+    "Automated research, personalization & follow-ups"
+  ]
+};
+
+const agentCapabilities = [
+  {
+    title: "Lead Research & ICP Targeting",
+    description:
+      "Agents identify and prioritize accounts that fit your ICP across industry, size, tech stack and signals.",
+    icon: Globe
+  },
+  {
+    title: "Cold Email & LinkedIn Copywriting",
+    description:
+      "Multi-variant messaging tested across segments to steadily increase open, reply and booked-call rates.",
+    icon: Mail
+  },
+  {
+    title: "Intent Detection & Qualification",
+    description:
+      "AI understands objections, buying signals and qualification criteria, not just simple keywords.",
+    icon: Brain
+  },
+  {
+    title: "Automated Follow-Up & Handoff",
+    description:
+      "Agents run structured follow-up sequences and push qualified meetings straight into your calendar.",
+    icon: CalendarCheck
+  }
+];
+
+const testimonials = [
+  {
+    quote:
+      "Leadnexa's AI Agents replaced what used to be an entire SDR pod. In the first 90 days we added over 40 qualified demos to our pipeline.",
+    name: "Growth Lead, B2B SaaS Company",
+    detail: "Series A · North America"
+  },
+  {
+    quote:
+      "We cut outbound tooling costs by ~30% while increasing meetings by 2.3x. The team now spends time on closing, not chasing replies.",
+    name: "VP Sales, IT Services Provider",
+    detail: "Mid-market · Global"
+  },
+  {
+    quote:
+      "The AI Agent understands our value prop better than most new hires. Ramp time went from months to days.",
+    name: "Founder, Marketing Agency",
+    detail: "10–50 employees"
+  }
+];
+
 const motionProps = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -95,88 +171,142 @@ const motionProps = {
 const TrustedLogos = () => (
   <div className="py-16 border-y border-white/5 bg-white/[0.02] overflow-hidden">
     <p className="text-center text-xs uppercase tracking-[0.4em] text-white/30 mb-10 font-medium">
-      Trusted by World-Class Revenue Teams
+      Trusted by Modern B2B Revenue Teams
     </p>
     <div className="flex w-max">
       <div className="flex animate-marquee space-x-16 items-center px-8">
-        {["ACME CORP", "NIMBUS AI", "IRONFORGE", "VERTEX", "STARK IND", "GLOBAL TECH", "QUANTUM"].map((logo) => (
-          <span key={logo} className="text-2xl font-bold text-white/20 hover:text-white/40 transition-colors cursor-default">
-            {logo}
-          </span>
-        ))}
+        {["B2B SAAS", "REVOPS CLOUD", "PIPELINE LABS", "NEXUS DATA", "GLOBAL SYSTEMS", "GROWTHFUEL", "QUANTUM"]
+          .map((logo) => (
+            <span
+              key={logo}
+              className="text-2xl font-bold text-white/20 hover:text-white/40 transition-colors cursor-default"
+            >
+              {logo}
+            </span>
+          ))}
       </div>
       <div className="flex animate-marquee space-x-16 items-center px-8">
-        {["ACME CORP", "NIMBUS AI", "IRONFORGE", "VERTEX", "STARK IND", "GLOBAL TECH", "QUANTUM"].map((logo) => (
-          <span key={logo + "_clone"} className="text-2xl font-bold text-white/20 hover:text-white/40 transition-colors cursor-default">
-            {logo}
-          </span>
-        ))}
+        {["B2B SAAS", "REVOPS CLOUD", "PIPELINE LABS", "NEXUS DATA", "GLOBAL SYSTEMS", "GROWTHFUEL", "QUANTUM"]
+          .map((logo) => (
+            <span
+              key={logo + "_clone"}
+              className="text-2xl font-bold text-white/20 hover:text-white/40 transition-colors cursor-default"
+            >
+              {logo}
+            </span>
+          ))}
       </div>
     </div>
   </div>
 );
 
 const UIMockup = () => (
-  <div className="relative group">
-    <div className="absolute -inset-1 bg-gradient-to-r from-teal to-electric rounded-[32px] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-    <div className="relative glass-panel-strong rounded-[28px] p-2 shadow-2xl overflow-hidden border-white/10">
-      <div className="bg-ink/50 rounded-[22px] p-6 border border-white/5">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
-            </div>
-            <div className="ml-4 h-6 w-32 bg-white/5 rounded-full"></div>
-          </div>
-          <div className="px-3 py-1 rounded-full bg-teal/10 border border-teal/20 text-[10px] text-teal animate-pulse">
-            LIVE CAMPAIGN
-          </div>
-        </div>
-        
-        <div className="space-y-4">
-          <div className="glass-panel p-4 rounded-xl border-white/10 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-electric/20 flex items-center justify-center">
-                <Mail className="h-5 w-5 text-electric" />
+  <div className="relative space-y-6">
+    {/* Main campaign performance card */}
+    <div className="relative group">
+      <div className="absolute -inset-1 bg-gradient-to-r from-teal to-electric rounded-[32px] blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+      <div className="relative glass-panel-strong rounded-[28px] p-2 shadow-2xl overflow-hidden border-white/10">
+        <div className="bg-ink/50 rounded-[22px] p-6 border border-white/5">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-2">
+              <div className="flex gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
               </div>
-              <div>
-                <div className="h-3 w-24 bg-white/10 rounded mb-2"></div>
-                <div className="h-2 w-16 bg-white/5 rounded"></div>
+              <div className="ml-4 h-6 w-32 bg-white/5 rounded-full flex items-center px-3 text-[10px] text-white/40">
+                AI SDR · Outbound Engine
               </div>
             </div>
-            <div className="text-right">
-              <div className="text-sm font-semibold text-white">1,240</div>
-              <div className="text-[10px] text-white/40">SENT TODAY</div>
-            </div>
-          </div>
-          
-          <div className="glass-panel p-4 rounded-xl border-teal/20 bg-teal/5 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-teal/20 flex items-center justify-center">
-                <MessageSquare className="h-5 w-5 text-teal" />
-              </div>
-              <div>
-                <div className="h-3 w-32 bg-white/20 rounded mb-2"></div>
-                <div className="h-2 w-20 bg-white/10 rounded"></div>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="text-sm font-semibold text-teal">24%</div>
-              <div className="text-[10px] text-teal/50">REPLY RATE</div>
+            <div className="px-3 py-1 rounded-full bg-teal/10 border border-teal/20 text-[10px] text-teal flex items-center gap-1">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-teal"></span>
+              </span>
+              LIVE CAMPAIGN
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 pt-2">
-            <div className="glass-panel p-4 rounded-xl border-white/5 text-center">
-              <div className="text-xs text-white/40 mb-1">BOOKED</div>
-              <div className="text-xl font-bold text-white">42</div>
+          <div className="space-y-4">
+            <div className="glass-panel p-4 rounded-xl border-white/10 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-electric/20 flex items-center justify-center">
+                  <Mail className="h-5 w-5 text-electric" />
+                </div>
+                <div>
+                  <div className="text-xs text-white/40 mb-1">Cold Emails Today</div>
+                  <div className="text-xs text-white/30">Multi-variant sequence · ICP: SaaS</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-sm font-semibold text-white">1,240</div>
+                <div className="text-[10px] text-white/40">SENT</div>
+              </div>
             </div>
-            <div className="glass-panel p-4 rounded-xl border-white/5 text-center">
-              <div className="text-xs text-white/40 mb-1">REVENUE</div>
-              <div className="text-xl font-bold text-electric">$12.5k</div>
+
+            <div className="glass-panel p-4 rounded-xl border-teal/20 bg-teal/5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-teal/20 flex items-center justify-center">
+                  <MessageSquare className="h-5 w-5 text-teal" />
+                </div>
+                <div>
+                  <div className="text-xs text-white/80 mb-1">Positive Replies</div>
+                  <div className="text-[11px] text-white/60">"Sounds interesting" · "Lets talk" · "Send more details"</div>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-sm font-semibold text-teal">24%</div>
+                <div className="text-[10px] text-teal/60">REPLY RATE</div>
+              </div>
             </div>
+
+            <div className="grid grid-cols-2 gap-4 pt-2">
+              <div className="glass-panel p-4 rounded-xl border-white/5 text-center">
+                <div className="text-xs text-white/40 mb-1">BOOKED THIS WEEK</div>
+                <div className="text-xl font-bold text-white">42</div>
+              </div>
+              <div className="glass-panel p-4 rounded-xl border-white/5 text-center">
+                <div className="text-xs text-white/40 mb-1">NEW PIPELINE</div>
+                <div className="text-xl font-bold text-electric">$120k</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Agent avatars + conversation mock */}
+    <div className="glass-panel rounded-3xl p-4 border-white/10 flex flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-xs text-white/40 uppercase tracking-[0.2em]">
+          <Bot className="w-4 h-4 text-teal" />
+          AI SALES AGENT SQUAD
+        </div>
+        <div className="flex items-center gap-2 text-[10px] text-white/40">
+          <Activity className="w-3 h-3 text-electric" />
+          Running outbound across Email & LinkedIn
+        </div>
+      </div>
+      <div className="flex -space-x-2">
+        {["Ava", "Leo", "Mia", "Kai"].map((name) => (
+          <div
+            key={name}
+            className="w-9 h-9 rounded-full border border-ink bg-gradient-to-br from-teal/40 to-electric/40 flex items-center justify-center text-[10px] font-semibold text-ink shadow-sm"
+          >
+            {name}
+          </div>
+        ))}
+      </div>
+      <div className="space-y-2 text-[11px] text-white/70">
+        <div className="flex gap-2 items-start">
+          <div className="px-2 py-1 rounded-full bg-teal/20 text-[10px] text-teal font-semibold">Ava · SDR Agent</div>
+          <div className="flex-1 px-3 py-2 rounded-2xl bg-white/5 border border-white/10">
+            Drafted 37 new intros for UK SaaS CEOs. Avg personalization score: 92%.
+          </div>
+        </div>
+        <div className="flex gap-2 items-start justify-end">
+          <div className="flex-1 px-3 py-2 rounded-2xl bg-teal/10 border border-teal/30 text-right">
+            Prioritize accounts with expansion potential & active hiring.
           </div>
         </div>
       </div>
@@ -209,15 +339,30 @@ export default function HomePage() {
               Leadnexa.Ai
             </div>
             <nav className="hidden items-center gap-10 text-sm font-medium text-white/60 md:flex">
-              <a href="#how" className="hover:text-teal transition-colors">How it works</a>
-              <a href="#solutions" className="hover:text-teal transition-colors">Solutions</a>
-              <a href="#pricing" className="hover:text-teal transition-colors">Pricing</a>
+              <a href="#how" className="hover:text-teal transition-colors">
+                How it works
+              </a>
+              <a href="#solutions" className="hover:text-teal transition-colors">
+                Solutions
+              </a>
+              <a href="#comparison" className="hover:text-teal transition-colors">
+                Why AI Agents
+              </a>
+              <a href="#pricing" className="hover:text-teal transition-colors">
+                Pricing
+              </a>
             </nav>
             <div className="flex items-center gap-4">
-              <a href="#pricing" className="rounded-full bg-white/5 border border-white/10 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10">
+              <a
+                href="#pricing"
+                className="rounded-full bg-white/5 border border-white/10 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10"
+              >
                 Log in
               </a>
-              <a href="#pricing" className="rounded-full bg-teal px-6 py-2.5 text-sm font-bold text-ink shadow-glow transition hover:-translate-y-0.5">
+              <a
+                href="#pricing"
+                className="rounded-full bg-teal px-6 py-2.5 text-sm font-bold text-ink shadow-glow transition hover:-translate-y-0.5"
+              >
                 Book a Demo
               </a>
             </div>
@@ -236,27 +381,52 @@ export default function HomePage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-teal"></span>
                 </span>
-                The 2026 Sales Infrastructure
+                AI Agents for B2B Pipeline in 2026
               </div>
               <h1 className="text-6xl font-bold leading-[1.05] tracking-tighter text-white lg:text-8xl">
-                Make AI Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-electric">#1 Sales Rep</span>
+                Make AI Your
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-electric">
+                  {" "}
+                  #1 Sales Rep
+                </span>
               </h1>
               <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/60 md:text-xl">
-                Beyond simple automation. We deploy 24/7 AI agents that master Cold Email and LinkedIn to book high-ticket B2B meetings on your behalf.
+                Deploy AI sales agents that prospect, write Cold Email & LinkedIn messages, handle replies, and
+                book qualified meetings for your team  without hiring a single SDR.
               </p>
+              <div className="mt-10 grid gap-3 text-sm text-white/50">
+                <div className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-teal" />
+                  <span>From lead research to booked meetings, fully managed by AI Agents.</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-teal" />
+                  <span>Built for B2B teams selling via outbound Email & LinkedIn.</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Check className="w-4 h-4 text-teal" />
+                  <span>Typical clients see 2 3x more meetings with lower outbound costs.</span>
+                </div>
+              </div>
               <div className="mt-12 flex flex-wrap gap-5">
-                <a href="#pricing" className="group inline-flex items-center gap-2 rounded-full bg-teal px-8 py-4 text-base font-bold text-ink shadow-glow transition hover:-translate-y-1">
+                <a
+                  href="#pricing"
+                  className="group inline-flex items-center gap-2 rounded-full bg-teal px-8 py-4 text-base font-bold text-ink shadow-glow transition hover:-translate-y-1"
+                >
                   Start Your Free Trial
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </a>
                 <div className="flex -space-x-3 items-center ml-2">
-                  {[1,2,3,4].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-ink bg-navy flex items-center justify-center overflow-hidden">
-                      <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="user" />
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className="w-10 h-10 rounded-full border-2 border-ink bg-navy flex items-center justify-center overflow-hidden"
+                    >
+                      <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="user" />
                     </div>
                   ))}
                   <div className="pl-6 text-sm text-white/50 font-medium">
-                    Joined by <span className="text-white font-bold">500+</span> teams
+                    Joined by <span className="text-white font-bold">B2B teams in SaaS, services and tech</span>
                   </div>
                 </div>
               </div>
@@ -270,13 +440,18 @@ export default function HomePage() {
           <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 py-32" id="why">
             <div className="mb-16 text-center">
               <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">Reinvent Your Outbound</h2>
-              <p className="mt-4 text-white/50 text-lg">Ditch expensive hiring and unpredictable performance.</p>
+              <p className="mt-4 text-white/50 text-lg">
+                Ditch expensive hiring and unpredictable performance. Let AI Agents own the top of funnel.
+              </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
               {valueProps.map((item) => {
                 const Icon = item.icon;
                 return (
-                  <div key={item.title} className={`${item.size} glass-panel rounded-[32px] p-10 hover:border-teal/30 transition-all duration-500 group`}>
+                  <div
+                    key={item.title}
+                    className={`${item.size} glass-panel rounded-[32px] p-10 hover:border-teal/30 transition-all duration-500 group`}
+                  >
                     <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-teal/10 transition-colors">
                       <Icon className="h-6 w-6 text-teal" />
                     </div>
@@ -300,28 +475,36 @@ export default function HomePage() {
               {[
                 {
                   title: "Pipeline Accelerator",
-                  description: "Rapidly fill the top of funnel with ICP-matched prospects and daily outreach velocity.",
+                  description:
+                    "Rapidly fill the top of funnel with ICP-matched prospects and daily outreach velocity.",
                   icon: BarChart3
                 },
                 {
                   title: "Account Expansion",
-                  description: "Multi-thread key accounts with tailored sequences across email and LinkedIn.",
+                  description:
+                    "Multi-thread key accounts with tailored sequences across email and LinkedIn.",
                   icon: Users
                 },
                 {
                   title: "Founder-Led to Team-Led",
-                  description: "Codify winning founder messaging and let AI scale it into a repeatable motion.",
+                  description:
+                    "Codify winning founder messaging and let AI scale it into a repeatable motion.",
                   icon: Sparkles
                 }
               ].map((item) => {
                 const Icon = item.icon;
                 return (
-                  <div key={item.title} className="glass-panel rounded-[32px] p-10 hover:border-teal/30 transition-all duration-500 group">
-                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-teal/10 transition-colors">
-                      <Icon className="h-6 w-6 text-teal" />
+                  <div
+                    key={item.title}
+                    className="glass-panel rounded-[32px] p-10 hover:border-teal/30 transition-all duration-500 group flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-teal/10 transition-colors">
+                        <Icon className="h-6 w-6 text-teal" />
+                      </div>
+                      <h3 className="mt-8 text-2xl font-bold text-white">{item.title}</h3>
+                      <p className="mt-4 text-white/50 leading-relaxed">{item.description}</p>
                     </div>
-                    <h3 className="mt-8 text-2xl font-bold text-white">{item.title}</h3>
-                    <p className="mt-4 text-white/50 leading-relaxed">{item.description}</p>
                     <div className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-teal">
                       Learn more <ArrowRight className="h-4 w-4" />
                     </div>
@@ -331,19 +514,75 @@ export default function HomePage() {
             </div>
           </motion.section>
 
+          {/* Comparison: AI Agents vs Traditional SDRs */}
+          <motion.section
+            {...motionProps}
+            className="mx-auto max-w-7xl px-6 pb-32"
+            id="comparison"
+          >
+            <div className="mb-12 text-center">
+              <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">
+                Why AI Agents Beat Traditional SDR Teams
+              </h2>
+              <p className="mt-4 text-white/50 text-lg max-w-2xl mx-auto">
+                Keep the human closers. Let AI handle the repetitive, high-volume work of prospecting, outreach
+                and qualification.
+              </p>
+            </div>
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div className="glass-panel rounded-[32px] p-10 border-white/10 bg-white/[0.02]">
+                <div className="flex items-center gap-3 mb-6">
+                  <Users className="w-6 h-6 text-white/60" />
+                  <span className="text-sm font-semibold text-white/60 uppercase tracking-[0.2em]">
+                    Traditional SDR Team
+                  </span>
+                </div>
+                <ul className="space-y-3 text-sm text-white/60">
+                  {comparison.traditional.map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span className="mt-1 w-1.5 h-1.5 rounded-full bg-white/20" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="glass-panel rounded-[32px] p-10 border-teal/40 bg-teal/5">
+                <div className="flex items-center gap-3 mb-6">
+                  <Bot className="w-6 h-6 text-teal" />
+                  <span className="text-sm font-semibold text-teal uppercase tracking-[0.2em]">
+                    Leadnexa AI Agents
+                  </span>
+                </div>
+                <ul className="space-y-3 text-sm text-white/80">
+                  {comparison.ai.map((item) => (
+                    <li key={item} className="flex gap-2">
+                      <span className="mt-1 w-1.5 h-1.5 rounded-full bg-teal/60" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </motion.section>
+
           {/* Process Section */}
-          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 py-32 bg-white/[0.02] rounded-[48px] border border-white/5" id="how">
+          <motion.section
+            {...motionProps}
+            className="mx-auto max-w-7xl px-6 py-32 bg-white/[0.02] rounded-[48px] border border-white/5"
+            id="how"
+          >
             <div className="grid lg:grid-cols-2 gap-20 items-center">
               <div>
                 <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">Zero to Meeting in 4 Steps</h2>
                 <p className="mt-6 text-white/60 text-lg leading-relaxed">
-                  Our AI agents don't just send messages. They learn your product, identify intent, and handle the back-and-forth scheduling.
+                  Our AI agents don't just send messages. They learn your product, identify intent, and handle the
+                  back-and-forth scheduling.
                 </p>
                 <div className="mt-10 space-y-8">
                   {steps.map((step, i) => (
                     <div key={step.title} className="flex gap-6">
                       <div className="flex-shrink-0 w-10 h-10 rounded-full border border-teal/30 bg-teal/5 flex items-center justify-center text-teal font-bold text-sm">
-                        0{i+1}
+                        0{i + 1}
                       </div>
                       <div>
                         <h4 className="text-lg font-bold text-white">{step.title}</h4>
@@ -355,14 +594,29 @@ export default function HomePage() {
               </div>
               <div className="relative">
                 <div className="absolute inset-0 bg-teal/20 blur-[100px] rounded-full"></div>
-                <div className="relative glass-panel rounded-[40px] p-12 aspect-square flex items-center justify-center border-white/10">
-                  <div className="grid grid-cols-2 gap-6 w-full">
-                    {[Globe, Lock, BarChart3, Mail].map((Icon, i) => (
-                      <div key={i} className="aspect-square rounded-3xl bg-white/5 flex flex-col items-center justify-center p-6 border border-white/5 hover:bg-white/10 transition-colors">
-                        <Icon className="h-8 w-8 text-teal mb-4" />
-                        <div className="h-2 w-12 bg-white/10 rounded"></div>
-                      </div>
-                    ))}
+                <div className="relative glass-panel rounded-[40px] p-12 flex flex-col gap-6 border-white/10">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Brain className="w-6 h-6 text-teal" />
+                    <span className="text-xs uppercase tracking-[0.2em] text-white/50 font-semibold">
+                      What Our AI Agents Actually Do
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    {agentCapabilities.map((capability) => {
+                      const Icon = capability.icon;
+                      return (
+                        <div
+                          key={capability.title}
+                          className="rounded-3xl bg-white/5 flex flex-col items-start justify-start p-5 border border-white/5 hover:bg-white/10 transition-colors"
+                        >
+                          <Icon className="h-6 w-6 text-teal mb-3" />
+                          <p className="text-xs font-semibold text-white mb-1">{capability.title}</p>
+                          <p className="text-[11px] text-white/60 leading-relaxed">
+                            {capability.description}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -370,10 +624,13 @@ export default function HomePage() {
           </motion.section>
 
           {/* Results Stats */}
-          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 py-32">
+          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 py-24">
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {results.map((result) => (
-                <div key={result.label} className="glass-panel rounded-3xl p-10 text-center hover:bg-white/5 transition-colors border-white/5">
+                <div
+                  key={result.label}
+                  className="glass-panel rounded-3xl p-10 text-center hover:bg-white/5 transition-colors border-white/5"
+                >
                   <div className="text-5xl font-bold text-teal mb-4">{result.value}</div>
                   <p className="text-xs uppercase tracking-[0.3em] text-white/40 font-bold">{result.label}</p>
                 </div>
@@ -381,15 +638,83 @@ export default function HomePage() {
             </div>
           </motion.section>
 
-          {/* Pricing Section */}
-          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 py-32 text-center" id="pricing">
-            <div className="max-w-3xl mx-auto mb-20">
-              <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">Simple, Transparent Pricing</h2>
-              <p className="mt-6 text-white/50 text-lg">No long-term contracts. Scale your sales force as you grow.</p>
+          {/* Testimonials Section */}
+          <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 py-32">
+            <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-16 items-center">
+              <div>
+                <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl mb-4">
+                  What Revenue Leaders Say
+                </h2>
+                <p className="text-white/60 text-lg max-w-xl mb-8">
+                  Leadnexa helps B2B teams move beyond manual prospecting and inconsistent outbound performance.
+                  Heres what it looks like in practice.
+                </p>
+                <div className="space-y-6">
+                  {testimonials.map((t) => (
+                    <div key={t.name} className="glass-panel rounded-3xl p-6 border-white/10">
+                      <p className="text-sm text-white/80 leading-relaxed mb-3">{t.quote}</p>
+                      <p className="text-xs text-white/40 font-semibold tracking-[0.2em] uppercase">
+                        {t.name}  b7 {t.detail}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="glass-panel rounded-[32px] p-8 border-teal/30 bg-teal/5 flex flex-col justify-between gap-8">
+                <div>
+                  <div className="flex items-center gap-3 mb-4">
+                    <BarChart3 className="w-6 h-6 text-teal" />
+                    <span className="text-xs uppercase tracking-[0.2em] text-teal font-semibold">
+                      Typical 90-Day Snapshot
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 mb-6">
+                    <div className="rounded-2xl bg-ink/60 border border-teal/30 p-4">
+                      <div className="text-xs text-white/50 mb-1">New meetings</div>
+                      <div className="text-2xl font-bold text-white">30 50</div>
+                      <div className="text-[11px] text-white/40">for a mid-market B2B sales team</div>
+                    </div>
+                    <div className="rounded-2xl bg-ink/60 border border-teal/30 p-4">
+                      <div className="text-xs text-white/50 mb-1">Outbound costs</div>
+                      <div className="text-2xl font-bold text-teal">-30%</div>
+                      <div className="text-[11px] text-white/40">vs. traditional SDR stack</div>
+                    </div>
+                  </div>
+                  <p className="text-[11px] text-white/50">
+                    Numbers above are based on typical outcomes for B2B SaaS and services customers using Leadnexa
+                    AI Agents with consistent outbound for at least 90 days.
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-ink/70 border border-white/10 p-4 flex items-center gap-3 text-xs text-white/60">
+                  <ShieldCheck className="w-5 h-5 text-teal" />
+                  <div>
+                    <p className="font-semibold text-white text-[11px] uppercase tracking-[0.2em] mb-1">
+                      Risk-Free to Get Started
+                    </p>
+                    <p>No long-term contracts. 14-day free trial, cancel anytime.</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            
+          </motion.section>
+
+          {/* Pricing Section */}
+          <motion.section
+            {...motionProps}
+            className="mx-auto max-w-7xl px-6 py-32 text-center"
+            id="pricing"
+          >
+            <div className="max-w-3xl mx-auto mb-20">
+              <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">
+                Simple, Transparent Pricing
+              </h2>
+              <p className="mt-6 text-white/50 text-lg">
+                No long-term contracts. Scale your AI sales force as you grow.
+              </p>
+            </div>
+
             <div className="glass-panel relative inline-block text-left max-w-2xl w-full rounded-[48px] border-teal/30 p-12 shadow-glow overflow-hidden">
-               <div className="absolute top-0 right-0 bg-teal px-8 py-2 rounded-bl-3xl text-ink text-xs font-black uppercase tracking-widest">
+              <div className="absolute top-0 right-0 bg-teal px-8 py-2 rounded-bl-3xl text-ink text-xs font-black uppercase tracking-widest">
                 MOST POPULAR
               </div>
               <div className="flex items-center gap-4 text-teal mb-8">
@@ -418,11 +743,10 @@ export default function HomePage() {
                 {isLoading ? "Redirecting..." : "Start 14-Day Free Trial"}
               </button>
               <p className="text-center mt-6 text-white/30 text-xs font-medium uppercase tracking-widest">
-                No Credit Card Required · Cancel Anytime · Deploy Instantly
+                No Credit Card Required  b7 Cancel Anytime  b7 Deploy Instantly
               </p>
             </div>
           </motion.section>
-
         </main>
 
         <footer className="border-t border-white/5 bg-ink/50 pt-20 pb-10">
@@ -443,17 +767,41 @@ export default function HomePage() {
                 <div>
                   <h5 className="text-white font-bold mb-6">Product</h5>
                   <ul className="space-y-4 text-sm text-white/40">
-                    <li><a href="#how" className="hover:text-teal transition-colors">How it works</a></li>
-                    <li><a href="#pricing" className="hover:text-teal transition-colors">Pricing</a></li>
-                    <li><a href="#" className="hover:text-teal transition-colors">API Docs</a></li>
+                    <li>
+                      <a href="#how" className="hover:text-teal transition-colors">
+                        How it works
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#pricing" className="hover:text-teal transition-colors">
+                        Pricing
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#comparison" className="hover:text-teal transition-colors">
+                        Why AI Agents
+                      </a>
+                    </li>
                   </ul>
                 </div>
                 <div>
                   <h5 className="text-white font-bold mb-6">Company</h5>
                   <ul className="space-y-4 text-sm text-white/40">
-                    <li><a href="#" className="hover:text-teal transition-colors">About</a></li>
-                    <li><a href="#" className="hover:text-teal transition-colors">Careers</a></li>
-                    <li><a href="#" className="hover:text-teal transition-colors">Contact</a></li>
+                    <li>
+                      <a href="#" className="hover:text-teal transition-colors">
+                        About
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="hover:text-teal transition-colors">
+                        Careers
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#" className="hover:text-teal transition-colors">
+                        Contact
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -461,8 +809,12 @@ export default function HomePage() {
             <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-white/30 uppercase tracking-[0.2em] font-bold">
               <p>© 2026 Leadnexa.Ai Inc. All rights reserved.</p>
               <div className="flex gap-8">
-                <a href="/privacy" className="hover:text-white">Privacy Policy</a>
-                <a href="/terms" className="hover:text-white">Terms of Service</a>
+                <a href="/privacy" className="hover:text-white">
+                  Privacy Policy
+                </a>
+                <a href="/terms" className="hover:text-white">
+                  Terms of Service
+                </a>
               </div>
             </div>
           </div>
