@@ -463,54 +463,80 @@ export default function HomePage() {
             </div>
           </motion.section>
 
-          {/* Solutions Section */}
+          {/* Case Studies Section */}
           <motion.section {...motionProps} className="mx-auto max-w-7xl px-6 pb-32" id="solutions">
             <div className="mb-16 text-center">
-              <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">Solutions That Fit Your GTM</h2>
+              <h2 className="text-4xl font-bold tracking-tight text-white md:text-5xl">Real Results From B2B Teams</h2>
               <p className="mt-4 text-white/50 text-lg">
-                Choose a deployment model that matches your sales motion and scale with confidence.
+                A few examples of how different B2B organizations use Leadnexa AI Agents to drive pipeline.
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
-              {[
-                {
-                  title: "Pipeline Accelerator",
-                  description:
-                    "Rapidly fill the top of funnel with ICP-matched prospects and daily outreach velocity.",
-                  icon: BarChart3
-                },
-                {
-                  title: "Account Expansion",
-                  description:
-                    "Multi-thread key accounts with tailored sequences across email and LinkedIn.",
-                  icon: Users
-                },
-                {
-                  title: "Founder-Led to Team-Led",
-                  description:
-                    "Codify winning founder messaging and let AI scale it into a repeatable motion.",
-                  icon: Sparkles
-                }
-              ].map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.title}
-                    className="glass-panel rounded-[32px] p-10 hover:border-teal/30 transition-all duration-500 group flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-teal/10 transition-colors">
-                        <Icon className="h-6 w-6 text-teal" />
-                      </div>
-                      <h3 className="mt-8 text-2xl font-bold text-white">{item.title}</h3>
-                      <p className="mt-4 text-white/50 leading-relaxed">{item.description}</p>
-                    </div>
-                    <div className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-teal">
-                      Learn more <ArrowRight className="h-4 w-4" />
-                    </div>
+              {/* SaaS Case */}
+              <div className="glass-panel rounded-[32px] p-10 hover:border-teal/30 transition-all duration-500 group flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-teal/10 transition-colors">
+                    <BarChart3 className="h-6 w-6 text-teal" />
                   </div>
-                );
-              })}
+                  <h3 className="mt-8 text-2xl font-bold text-white">B2B SaaS</h3>
+                  <p className="mt-3 text-sm font-semibold text-teal">+38 qualified demos in 90 days</p>
+                  <p className="mt-4 text-white/50 leading-relaxed text-sm">
+                    Early-stage SaaS team relying on founder-led sales. Leadnexa AI Agents took over outbound
+                    research and messaging, generating a steady flow of qualified demos while freeing the founder
+                    to focus on product and closing.
+                  </p>
+                </div>
+                <a
+                  href="/case-studies/saas"
+                  className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-teal"
+                >
+                  Learn more <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
+
+              {/* IT Services Case */}
+              <div className="glass-panel rounded-[32px] p-10 hover:border-teal/30 transition-all duration-500 group flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-teal/10 transition-colors">
+                    <Users className="h-6 w-6 text-teal" />
+                  </div>
+                  <h3 className="mt-8 text-2xl font-bold text-white">IT Services</h3>
+                  <p className="mt-3 text-sm font-semibold text-teal">2.5x more meetings with mid-market prospects</p>
+                  <p className="mt-4 text-white/50 leading-relaxed text-sm">
+                    Services provider with long sales cycles and a lean sales team. AI Agents built targeted
+                    account lists and ran multi-channel outreach, resulting in 2.5x more meetings with
+                    decision-makers in 90 days.
+                  </p>
+                </div>
+                <a
+                  href="/case-studies/it-services"
+                  className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-teal"
+                >
+                  Learn more <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
+
+              {/* Henderson Case */}
+              <div className="glass-panel rounded-[32px] p-10 hover:border-teal/30 transition-all duration-500 group flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-teal/10 transition-colors">
+                    <Sparkles className="h-6 w-6 text-teal" />
+                  </div>
+                  <h3 className="mt-8 text-2xl font-bold text-white">Professional Services</h3>
+                  <p className="mt-3 text-sm font-semibold text-teal">SR&ED and government funding advisory</p>
+                  <p className="mt-4 text-white/50 leading-relaxed text-sm">
+                    Specialized advisory firm helping Canadian businesses secure SR&ED tax credits and government
+                    funding. Leadnexa AI Agents targeted innovation-driven companies and booked qualified
+                    consultations with CFOs and technical leaders without adding SDR headcount.
+                  </p>
+                </div>
+                <a
+                  href="/case-studies/henderson"
+                  className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-teal"
+                >
+                  Learn more <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
             </div>
           </motion.section>
 
