@@ -86,21 +86,16 @@ const results = [
 ];
 
 const pricingServices = [
-  "5 AI Sales Agents",
-  "Email & LinkedIn outreach",
+  "1 established LinkedIn account per AI sales agent",
+  "Email & LinkedIn outreach done for you",
   "Unlimited email campaigns",
-  "2,000 cold Emails sent daily",
+  "High-volume cold email delivery",
   "Thousands of follow-up messages",
   "Custom ICP & messaging strategy",
   "Qualified lead list built",
   "1-on-1 onboarding & support",
   "Weekly performance insights",
   "Dedicated Success Manager"
-];
-
-const starterServices = [
-  "2 AI Sales Agents",
-  ...pricingServices.slice(1)
 ];
 
 const comparison = {
@@ -357,8 +352,12 @@ const UIMockup = () => (
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
-  const baseTotal = 3500;
-  const starterTotal = 1400;
+  const [agentCount, setAgentCount] = useState(5);
+
+  const unitPrice =
+    agentCount <= 4 ? 750 : agentCount <= 10 ? 700 : agentCount <= 20 ? 650 : 600;
+  const monthlyTotal = agentCount * unitPrice;
+  const sliderProgress = ((agentCount - 1) / 29) * 100;
 
   const handleCheckout = async () => {
     setIsLoading(true);
@@ -423,31 +422,31 @@ export default function HomePage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-teal"></span>
                 </span>
-                High-Touch Lead Generation, Powered by AI
+                B2B Lead Generation with AI Sales Agents
               </div>
               <h1 className="text-6xl font-bold leading-[1.05] tracking-tighter text-white lg:text-8xl">
-                Make AI Your
+                Scale B2B Pipeline with
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-electric">
                   {" "}
-                  #1 Sales Rep
+                  AI Sales Agents
                 </span>
               </h1>
               <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/60 md:text-xl">
-                AI sales agents that prospect, write cold email and LinkedIn messages, handle replies, and
-                book qualified meetings without hiring a single SDR.
+                We help B2B teams generate qualified leads with AI-powered sales reps that run cold email and
+                LinkedIn outreach end-to-end.
               </p>
               <div className="mt-10 grid gap-3 text-sm text-white/50">
                 <div className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-teal" />
-                  <span>High-Touch management: we run the engine; you focus on closing.</span>
+                  <span>Each AI agent includes three email accounts and one established LinkedIn account.</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-teal" />
-                  <span>Built for B2B teams selling via outbound Email & LinkedIn.</span>
+                  <span>Agents handle prospecting, messaging, follow-ups, and reply handling.</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-teal" />
-                  <span>You only get notified when a prospect shows real intent.</span>
+                  <span>Built for B2B teams that want predictable lead generation at scale.</span>
                 </div>
               </div>
               <div className="mt-12 flex flex-wrap gap-5">
@@ -838,63 +837,65 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="grid w-full max-w-5xl gap-10 lg:grid-cols-2">
-              <div className="glass-panel relative text-left rounded-[48px] border-white/10 p-12 shadow-2xl">
-                <div className="flex items-center gap-4 text-white/80 mb-8">
-                  <ShieldCheck className="h-8 w-8 text-white/70" />
-                  <span className="text-2xl font-bold uppercase tracking-tight">Starter</span>
+            <div className="mx-auto w-full max-w-5xl">
+              <div className="mb-12 rounded-3xl border border-white/10 bg-white/[0.03] p-8 text-left">
+                <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/40">Number of AI Sales Agents</p>
+                    <p className="mt-2 text-3xl font-bold text-white">{agentCount}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/40">Unit Price</p>
+                    <p className="mt-2 text-2xl font-bold text-teal">${unitPrice}/agent</p>
+                  </div>
                 </div>
-                <div className="flex items-end gap-3 mb-10">
-                  <span className="text-6xl font-bold text-white tracking-tighter">${starterTotal}</span>
-                  <span className="pb-2 text-white/40 font-medium">/ month</span>
+                <input
+                  type="range"
+                  min={1}
+                  max={30}
+                  step={1}
+                  value={agentCount}
+                  onChange={(event) => setAgentCount(Number(event.target.value))}
+                  aria-label="Select number of AI sales agents"
+                  className="h-3 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-teal"
+                  style={{
+                    background: `linear-gradient(to right, rgb(45 212 191) 0%, rgb(45 212 191) ${sliderProgress}%, rgba(255,255,255,0.12) ${sliderProgress}%, rgba(255,255,255,0.12) 100%)`
+                  }}
+                />
+                <div className="mt-5 grid gap-3 text-xs text-white/50 sm:grid-cols-4">
+                  <div className={agentCount <= 4 ? "text-teal font-semibold" : ""}>1-4 agents: $750 each</div>
+                  <div className={agentCount >= 5 && agentCount <= 10 ? "text-teal font-semibold" : ""}>
+                    5-10 agents: $700 each
+                  </div>
+                  <div className={agentCount >= 11 && agentCount <= 20 ? "text-teal font-semibold" : ""}>
+                    11-20 agents: $650 each
+                  </div>
+                  <div className={agentCount >= 21 ? "text-teal font-semibold" : ""}>21-30 agents: $600 each</div>
                 </div>
-                <p className="text-sm text-white/50 mb-8">
-                  2 agents × $700/agent. Typically less than the fully loaded cost of one SDR.
-                </p>
-                <div className="grid md:grid-cols-2 gap-x-12 gap-y-6 mb-12">
-                  {starterServices.map((service) => (
-                    <div key={service} className="flex items-start gap-3">
-                      <div className="mt-1 bg-white/10 p-0.5 rounded-full">
-                        <Check className="h-3.5 w-3.5 text-white/70" />
-                      </div>
-                      <span className="text-sm text-white/70 font-medium leading-relaxed">{service}</span>
-                    </div>
-                  ))}
-                </div>
-                <button
-                  onClick={handleCheckout}
-                  disabled={isLoading}
-                  className="w-full rounded-2xl border border-white/15 bg-white/5 py-5 text-lg font-black text-white/80 transition hover:-translate-y-1 active:translate-y-0 disabled:opacity-50"
-                >
-                  {isLoading ? "Redirecting..." : "Start 14-Day Free Trial"}
-                </button>
-                <p className="text-center mt-6 text-white/30 text-xs font-medium uppercase tracking-widest">
-                  No Credit Card Required | Cancel Anytime | Deploy Instantly
-                </p>
               </div>
 
-              <div className="glass-panel relative text-left rounded-[48px] border-teal/30 p-12 shadow-glow overflow-hidden">
+              <div className="glass-panel relative overflow-hidden rounded-[48px] border-teal/30 p-12 text-left shadow-glow">
                 <div className="absolute top-0 right-0 bg-teal px-8 py-2 rounded-bl-3xl text-ink text-xs font-black uppercase tracking-widest">
-                  MOST POPULAR
+                  Dynamic Plan
                 </div>
-                <div className="flex items-center gap-4 text-teal mb-8">
+                <div className="mb-8 flex items-center gap-4 text-teal">
                   <ShieldCheck className="h-8 w-8" />
-                  <span className="text-2xl font-bold uppercase tracking-tight">Standard</span>
+                  <span className="text-2xl font-bold uppercase tracking-tight">AI Agent Growth Plan</span>
                 </div>
-                <div className="flex items-end gap-3 mb-10">
-                  <span className="text-7xl font-bold text-white tracking-tighter">${baseTotal}</span>
+                <div className="mb-10 flex items-end gap-3">
+                  <span className="text-7xl font-bold text-white tracking-tighter">${monthlyTotal.toLocaleString()}</span>
                   <span className="pb-2 text-white/40 font-medium">/ month</span>
                 </div>
-                <p className="text-sm text-white/50 mb-8">
-                  5 agents × $700/agent. Typically less than the fully loaded cost of one SDR.
+                <p className="mb-8 text-sm text-white/50">
+                  {agentCount} agents × ${unitPrice}/agent. Includes outbound execution across cold email and LinkedIn.
                 </p>
-                <div className="grid md:grid-cols-2 gap-x-12 gap-y-6 mb-12">
+                <div className="mb-12 grid gap-x-12 gap-y-6 md:grid-cols-2">
                   {pricingServices.map((service) => (
                     <div key={service} className="flex items-start gap-3">
-                      <div className="mt-1 bg-teal/20 p-0.5 rounded-full">
+                      <div className="mt-1 rounded-full bg-teal/20 p-0.5">
                         <Check className="h-3.5 w-3.5 text-teal" />
                       </div>
-                      <span className="text-sm text-white/70 font-medium leading-relaxed">{service}</span>
+                      <span className="text-sm font-medium leading-relaxed text-white/70">{service}</span>
                     </div>
                   ))}
                 </div>
@@ -905,7 +906,7 @@ export default function HomePage() {
                 >
                   {isLoading ? "Redirecting..." : "Start 14-Day Free Trial"}
                 </button>
-                <p className="text-center mt-6 text-white/30 text-xs font-medium uppercase tracking-widest">
+                <p className="mt-6 text-center text-xs font-medium uppercase tracking-widest text-white/30">
                   No Credit Card Required | Cancel Anytime | Deploy Instantly
                 </p>
               </div>
