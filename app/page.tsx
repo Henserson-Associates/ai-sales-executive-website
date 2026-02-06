@@ -86,12 +86,21 @@ const results = [
 ];
 
 const pricingServices = [
-  "5 AI Sales Representative Seats",
-  "2,000 Cold Emails Sent Daily",
-  "Automated LinkedIn Outreach",
-  "Custom ICP & Messaging Strategy",
-  "Weekly Performance Insights",
+  "5 AI Sales Agents",
+  "Email & LinkedIn outreach",
+  "Unlimited email campaigns",
+  "2,000 cold Emails sent daily",
+  "Thousands of follow-up messages",
+  "Custom ICP & messaging strategy",
+  "Qualified lead list built",
+  "1-on-1 onboarding & support",
+  "Weekly performance insights",
   "Dedicated Success Manager"
+];
+
+const starterServices = [
+  "2 AI Sales Agents",
+  ...pricingServices.slice(1)
 ];
 
 const comparison = {
@@ -113,7 +122,7 @@ const comparison = {
 
 const comparisonRows = [
   { label: "Monthly cost", traditional: "$6k-$9k per SDR", ai: "From $3.5k for 5 AI seats" },
-  { label: "Time to productivity", traditional: "60-90 days", ai: "7-10 days" },
+  { label: "Time to productivity", traditional: "60-90 days", ai: "4-14 days" },
   { label: "Working hours", traditional: "40 hrs/week", ai: "168 hrs/week" },
   { label: "Daily outreach", traditional: "40-60 contacts", ai: "300-500 contacts" },
   { label: "Management time", traditional: "5-10 hrs/week", ai: "Near-zero" },
@@ -349,6 +358,7 @@ const UIMockup = () => (
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const baseTotal = 3500;
+  const starterTotal = 1400;
 
   const handleCheckout = async () => {
     setIsLoading(true);
@@ -527,9 +537,9 @@ export default function HomePage() {
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 { value: "24/7", label: "Always on outreach" },
-                { value: "2-3x", label: "More meetings" },
-                { value: "7-10 days", label: "Launch window" },
-                { value: "-30%", label: "Tooling cost reduction" }
+                { value: "2-3x", label: "Lead conversion rate" },
+                { value: "4-14 days", label: "Launch window" },
+                { value: "-87%", label: "Hiring cost reduction" }
               ].map((item) => (
                 <div
                   key={item.label}
@@ -794,7 +804,7 @@ export default function HomePage() {
                 },
                 {
                   q: "How fast can we go live?",
-                  a: "Most teams launch in 7-10 days after a kickoff and ICP alignment call."
+                  a: "Most teams launch in 4-14 days after a kickoff and ICP alignment call."
                 },
                 {
                   q: "Do you write and optimize messaging?",
@@ -828,41 +838,77 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="glass-panel relative inline-block text-left max-w-2xl w-full rounded-[48px] border-teal/30 p-12 shadow-glow overflow-hidden">
-              <div className="absolute top-0 right-0 bg-teal px-8 py-2 rounded-bl-3xl text-ink text-xs font-black uppercase tracking-widest">
-                MOST POPULAR
-              </div>
-              <div className="flex items-center gap-4 text-teal mb-8">
-                <ShieldCheck className="h-8 w-8" />
-                <span className="text-2xl font-bold uppercase tracking-tight">Standard Enterprise</span>
-              </div>
-              <div className="flex items-end gap-3 mb-10">
-                <span className="text-7xl font-bold text-white tracking-tighter">${baseTotal}</span>
-                <span className="pb-2 text-white/40 font-medium">/ month</span>
-              </div>
-              <p className="text-sm text-white/50 mb-8">
-                Starting at ${baseTotal}/month. Typically less than the fully loaded cost of one SDR.
-              </p>
-              <div className="grid md:grid-cols-2 gap-x-12 gap-y-6 mb-12">
-                {pricingServices.map((service) => (
-                  <div key={service} className="flex items-start gap-3">
-                    <div className="mt-1 bg-teal/20 p-0.5 rounded-full">
-                      <Check className="h-3.5 w-3.5 text-teal" />
+            <div className="grid w-full max-w-5xl gap-10 lg:grid-cols-2">
+              <div className="glass-panel relative text-left rounded-[48px] border-white/10 p-12 shadow-2xl">
+                <div className="flex items-center gap-4 text-white/80 mb-8">
+                  <ShieldCheck className="h-8 w-8 text-white/70" />
+                  <span className="text-2xl font-bold uppercase tracking-tight">Starter</span>
+                </div>
+                <div className="flex items-end gap-3 mb-10">
+                  <span className="text-6xl font-bold text-white tracking-tighter">${starterTotal}</span>
+                  <span className="pb-2 text-white/40 font-medium">/ month</span>
+                </div>
+                <p className="text-sm text-white/50 mb-8">
+                  2 agents × $700/agent. Typically less than the fully loaded cost of one SDR.
+                </p>
+                <div className="grid md:grid-cols-2 gap-x-12 gap-y-6 mb-12">
+                  {starterServices.map((service) => (
+                    <div key={service} className="flex items-start gap-3">
+                      <div className="mt-1 bg-white/10 p-0.5 rounded-full">
+                        <Check className="h-3.5 w-3.5 text-white/70" />
+                      </div>
+                      <span className="text-sm text-white/70 font-medium leading-relaxed">{service}</span>
                     </div>
-                    <span className="text-sm text-white/70 font-medium leading-relaxed">{service}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <button
+                  onClick={handleCheckout}
+                  disabled={isLoading}
+                  className="w-full rounded-2xl border border-white/15 bg-white/5 py-5 text-lg font-black text-white/80 transition hover:-translate-y-1 active:translate-y-0 disabled:opacity-50"
+                >
+                  {isLoading ? "Redirecting..." : "Start 14-Day Free Trial"}
+                </button>
+                <p className="text-center mt-6 text-white/30 text-xs font-medium uppercase tracking-widest">
+                  No Credit Card Required | Cancel Anytime | Deploy Instantly
+                </p>
               </div>
-              <button
-                onClick={handleCheckout}
-                disabled={isLoading}
-                className="w-full rounded-2xl bg-teal py-5 text-lg font-black text-ink shadow-glow transition hover:-translate-y-1 active:translate-y-0 disabled:opacity-50"
-              >
-                {isLoading ? "Redirecting..." : "Start 14-Day Free Trial"}
-              </button>
-              <p className="text-center mt-6 text-white/30 text-xs font-medium uppercase tracking-widest">
-                No Credit Card Required | Cancel Anytime | Deploy Instantly
-              </p>
+
+              <div className="glass-panel relative text-left rounded-[48px] border-teal/30 p-12 shadow-glow overflow-hidden">
+                <div className="absolute top-0 right-0 bg-teal px-8 py-2 rounded-bl-3xl text-ink text-xs font-black uppercase tracking-widest">
+                  MOST POPULAR
+                </div>
+                <div className="flex items-center gap-4 text-teal mb-8">
+                  <ShieldCheck className="h-8 w-8" />
+                  <span className="text-2xl font-bold uppercase tracking-tight">Standard</span>
+                </div>
+                <div className="flex items-end gap-3 mb-10">
+                  <span className="text-7xl font-bold text-white tracking-tighter">${baseTotal}</span>
+                  <span className="pb-2 text-white/40 font-medium">/ month</span>
+                </div>
+                <p className="text-sm text-white/50 mb-8">
+                  5 agents × $700/agent. Typically less than the fully loaded cost of one SDR.
+                </p>
+                <div className="grid md:grid-cols-2 gap-x-12 gap-y-6 mb-12">
+                  {pricingServices.map((service) => (
+                    <div key={service} className="flex items-start gap-3">
+                      <div className="mt-1 bg-teal/20 p-0.5 rounded-full">
+                        <Check className="h-3.5 w-3.5 text-teal" />
+                      </div>
+                      <span className="text-sm text-white/70 font-medium leading-relaxed">{service}</span>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={handleCheckout}
+                  disabled={isLoading}
+                  className="w-full rounded-2xl bg-teal py-5 text-lg font-black text-ink shadow-glow transition hover:-translate-y-1 active:translate-y-0 disabled:opacity-50"
+                >
+                  {isLoading ? "Redirecting..." : "Start 14-Day Free Trial"}
+                </button>
+                <p className="text-center mt-6 text-white/30 text-xs font-medium uppercase tracking-widest">
+                  No Credit Card Required | Cancel Anytime | Deploy Instantly
+                </p>
+              </div>
             </div>
           </motion.section>
         </main>
