@@ -8,7 +8,7 @@ export default function HendersonCaseStudyPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2.5 text-xl font-bold tracking-tight text-white">
             <div className="bg-teal p-1.5 rounded-lg" />
-            Leadnexa.Ai
+            LeadNexa.ai
           </Link>
           <nav className="hidden items-center gap-10 text-sm font-medium text-white/60 md:flex">
             <Link href="/#how" className="hover:text-teal transition-colors">

@@ -353,6 +353,7 @@ const UIMockup = () => (
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [agentCount, setAgentCount] = useState(5);
+  const showTrustedLogos = process.env.NEXT_PUBLIC_SHOW_TRUSTED_LOGOS === "true";
 
   const unitPrice =
     agentCount <= 4 ? 750 : agentCount <= 10 ? 700 : agentCount <= 20 ? 650 : 600;
@@ -380,7 +381,7 @@ export default function HomePage() {
               <div className="bg-teal p-1.5 rounded-lg">
                 <Sparkles className="h-5 w-5 text-ink" />
               </div>
-              Leadnexa.Ai
+              LeadNexa.ai
             </a>
             <nav className="hidden items-center gap-10 text-sm font-medium text-white/60 md:flex">
               <a href="#how" className="hover:text-teal transition-colors">
@@ -401,7 +402,7 @@ export default function HomePage() {
             </nav>
             <div className="flex items-center gap-4">
               <a
-                href="#pricing"
+                href="/talk-to-our-team"
                 className="rounded-full bg-teal px-6 py-2.5 text-sm font-bold text-ink shadow-glow transition hover:-translate-y-0.5"
               >
                 Talk to Our Team
@@ -451,7 +452,7 @@ export default function HomePage() {
               </div>
               <div className="mt-12 flex flex-wrap gap-5">
                 <a
-                  href="#pricing"
+                  href="/talk-to-our-team"
                   className="group inline-flex items-center gap-2 rounded-full bg-teal px-8 py-4 text-base font-bold text-ink shadow-glow transition hover:-translate-y-1"
                 >
                   Talk to Our Team
@@ -476,7 +477,7 @@ export default function HomePage() {
           </motion.section>
 
           <div className="mt-6 md:mt-10">
-            <TrustedLogos />
+            {showTrustedLogos && <TrustedLogos />}
           </div>
 
           {/* Comparison: AI Agents vs Traditional SDRs */}
@@ -922,7 +923,7 @@ export default function HomePage() {
                   <div className="bg-teal p-1.5 rounded-lg">
                     <Sparkles className="h-5 w-5 text-ink" />
                   </div>
-                  Leadnexa.Ai
+                  LeadNexa.ai
                 </div>
                 <p className="text-white/40 text-sm leading-relaxed">
                   Driving B2B scale through AI-powered multi-channel outbound infrastructure.
@@ -972,7 +973,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-white/30 uppercase tracking-[0.2em] font-bold">
-              <p>(c) 2026 Leadnexa.Ai Inc. All rights reserved.</p>
+              <p>(c) 2026 LeadNexa.ai Inc. All rights reserved.</p>
               <div className="flex gap-8">
                 <a href="/privacy" className="hover:text-white">
                   Privacy Policy
