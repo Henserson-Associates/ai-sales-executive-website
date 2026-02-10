@@ -94,17 +94,21 @@ const steps = [
 const pricingServices = [
   "1 established LinkedIn account per AI sales agent",
   "2 dedicated email inboxes per AI sales agent",
+
   "Email & LinkedIn outreach with team handoff",
   "Flexible outbound campaign setup",
-  "Scalable cold email delivery",
   "Automated follow-up sequences",
-  "Deliverability managed end-to-end",
+  "Scalable cold email delivery",
+  "Designed for ~1,000 emails per agent per month when fully warmed",
+
   "Custom ICP & messaging strategy",
   "Qualified lead list built based on your ICP",
-  "1-on-1 onboarding & support",
+
   "Weekly performance insights",
+  "1-on-1 onboarding & support",
   "Dedicated Success Manager"
 ];
+
 
 
 const comparison = {
@@ -923,7 +927,7 @@ export default function HomePage() {
                   <span className="pb-2 text-white/40 font-medium">/ month</span>
                 </div>
                 <p className="mb-8 text-sm text-white/50">
-                  {agentCount} agents × ${unitPrice}/agent. Includes outbound execution across cold email and LinkedIn.
+                  {agentCount} agents × ${unitPrice}/agent — covering cold email and LinkedIn outreach. 
                 </p>
                 <div className="mb-12 grid gap-x-12 gap-y-6 md:grid-cols-2">
                   {pricingServices.map((service) => (
