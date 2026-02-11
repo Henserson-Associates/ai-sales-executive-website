@@ -9,7 +9,33 @@ function getNextPath(): string {
     return "/";
   }
   const next = new URLSearchParams(window.location.search).get("next");
-  return next && next.startsWith("/") ? next : "/";
+  if (!next) {
+    return "/";
+  }
+
+  if (next.startsWith("/")) {
+    return next;
+  }
+
+  try {
+    const parsed = new URL(next);
+    const allowList = new Set<string>([
+      window.location.origin,
+      process.env.NEXT_PUBLIC_APP_URL ?? "",
+      ...(process.env.NEXT_PUBLIC_ALLOWED_REDIRECT_ORIGINS ?? "")
+        .split(",")
+        .map((item) => item.trim())
+        .filter(Boolean)
+    ]);
+
+    if (allowList.has(parsed.origin)) {
+      return parsed.toString();
+    }
+  } catch {
+    return "/";
+  }
+
+  return "/";
 }
 
 export default function LoginPage() {

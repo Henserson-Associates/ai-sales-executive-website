@@ -23,6 +23,11 @@ export type PendingSessionClaims = BaseSessionClaims & {
 
 export type SessionClaims = AppSessionClaims | PendingSessionClaims;
 
+function getCookieDomain(): string | undefined {
+  const raw = (process.env.SESSION_COOKIE_DOMAIN ?? "").trim();
+  return raw ? raw : undefined;
+}
+
 function getJwtSecret(): string {
   const secret = process.env.JWT_SECRET;
   if (!secret || secret.length < 32) {
@@ -99,6 +104,7 @@ export function setSessionCookie(response: NextResponse, token: string): void {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
+    domain: getCookieDomain(),
     path: "/",
     maxAge: SESSION_TTL_SECONDS
   });
@@ -111,6 +117,7 @@ export function clearSessionCookie(response: NextResponse): void {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
+    domain: getCookieDomain(),
     path: "/",
     maxAge: 0
   });
