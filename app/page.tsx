@@ -100,7 +100,7 @@ const pricingServices = [
   "Flexible outbound campaign setup",
   "Automated follow-up sequences",
   "Scalable cold email delivery",
-  "Designed for ~1,000 emails per agent per month when fully warmed",
+  "Designed for ~2,000 emails per agent per month when fully warmed",
 
   "Custom ICP & messaging strategy",
   "Qualified lead list built based on your ICP",
