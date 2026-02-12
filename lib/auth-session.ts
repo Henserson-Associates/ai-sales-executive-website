@@ -111,14 +111,24 @@ export function setSessionCookie(response: NextResponse, token: string): void {
 }
 
 export function clearSessionCookie(response: NextResponse): void {
-  response.cookies.set({
+  const baseCookie = {
     name: SESSION_COOKIE_NAME,
     value: "",
-    httpOnly: true,
-    sameSite: "lax",
+    httpOnly: true as const,
+    sameSite: "lax" as const,
     secure: process.env.NODE_ENV === "production",
-    domain: getCookieDomain(),
     path: "/",
     maxAge: 0
-  });
+  };
+
+  const domain = getCookieDomain();
+  if (domain) {
+    response.cookies.set({
+      ...baseCookie,
+      domain
+    });
+  }
+
+  // Also clear host-only cookie variant for users who still have legacy scoped cookies.
+  response.cookies.set(baseCookie);
 }
