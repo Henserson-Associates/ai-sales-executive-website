@@ -8,7 +8,7 @@ export default function HendersonCaseStudyPage() {
       <header className="sticky top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center transition-opacity hover:opacity-90">
-            <Image src="/logo.png" alt="LeadNexa logo" width={170} height={40} className="h-8 w-auto" priority />
+            <Image src="/logo.png" alt="LeadNexa logo" width={170} height={40} className="h-9 w-auto" priority />
           </Link>
           <nav className="hidden items-center gap-10 text-sm font-medium text-white/60 md:flex">
             <Link href="/#how" className="hover:text-teal transition-colors">

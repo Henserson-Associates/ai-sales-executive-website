@@ -22,7 +22,7 @@ export default function TalkToOurTeamPage() {
               href="/"
               className="flex items-center transition-opacity hover:opacity-90"
             >
-              <Image src="/logo.png" alt="LeadNexa logo" width={170} height={40} className="h-8 w-auto" priority />
+              <Image src="/logo.png" alt="LeadNexa logo" width={170} height={40} className="h-9 w-auto" priority />
             </a>
             <nav className="hidden items-center gap-10 text-sm font-medium text-white/60 md:flex">
               <a href="/#how" className="hover:text-teal transition-colors">
