@@ -76,9 +76,9 @@ export async function POST(request: Request) {
     const body = await request.json().catch(() => ({}));
     const agents = Number(body?.agents);
 
-    if (!Number.isInteger(agents) || agents < 1 || agents > 30) {
+    if (!Number.isInteger(agents) || agents < 3 || agents > 30) {
       return NextResponse.json(
-        { error: "agents must be an integer between 1 and 30." },
+        { error: "agents must be an integer between 3 and 30." },
         { status: 400 }
       );
     }

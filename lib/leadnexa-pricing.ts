@@ -7,8 +7,8 @@ export type TierInfo = {
 };
 
 export function getTierForAgentCount(agents: number): TierInfo {
-  if (!Number.isInteger(agents) || agents < 1 || agents > 30) {
-    throw new Error("Agents must be an integer between 1 and 30.");
+  if (!Number.isInteger(agents) || agents < 3 || agents > 30) {
+    throw new Error("Agents must be an integer between 3 and 30.");
   }
 
   const priceId750 = process.env.PRICE_ID_TIER_750;
@@ -20,7 +20,7 @@ export function getTierForAgentCount(agents: number): TierInfo {
     throw new Error("Missing one or more Stripe tier price IDs.");
   }
 
-  if (agents <= 4) {
+  if (agents <= 5) {
     return { key: "tier_750", unitPrice: 750, priceId: priceId750 };
   }
 

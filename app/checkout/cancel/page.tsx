@@ -8,7 +8,7 @@ type CheckoutCancelPageProps = {
 
 function parseAgents(value?: string): number | null {
   const parsed = Number(value);
-  if (!Number.isInteger(parsed) || parsed < 1 || parsed > 30) {
+  if (!Number.isInteger(parsed) || parsed < 3 || parsed > 30) {
     return null;
   }
   return parsed;

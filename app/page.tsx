@@ -206,7 +206,7 @@ function getInitialAgentCount(): number {
 
   const rawValue = new URLSearchParams(window.location.search).get("agents");
   const parsed = Number(rawValue);
-  if (!Number.isInteger(parsed) || parsed < 1 || parsed > 30) {
+  if (!Number.isInteger(parsed) || parsed < 3 || parsed > 30) {
     return 5;
   }
 
@@ -395,9 +395,9 @@ export default function HomePage() {
   const dashboardUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "https://app.leadnexa.ai").replace(/\/$/, "");
 
   const unitPrice =
-    agentCount <= 4 ? 750 : agentCount <= 10 ? 700 : agentCount <= 20 ? 650 : 600;
+    agentCount <= 5 ? 750 : agentCount <= 10 ? 700 : agentCount <= 20 ? 650 : 600;
   const monthlyTotal = agentCount * unitPrice;
-  const sliderProgress = ((agentCount - 1) / 29) * 100;
+  const sliderProgress = ((agentCount - 3) / 27) * 100;
 
   useEffect(() => {
     let isMounted = true;
@@ -1099,7 +1099,7 @@ export default function HomePage() {
                 </div>
                 <input
                   type="range"
-                  min={1}
+                  min={3}
                   max={30}
                   step={1}
                   value={agentCount}
@@ -1111,9 +1111,11 @@ export default function HomePage() {
                   }}
                 />
                 <div className="mt-5 grid gap-3 text-xs text-white/50 sm:grid-cols-4">
-                  <div className={agentCount <= 4 ? "text-teal font-semibold" : ""}>1-4 agents: $750 each</div>
-                  <div className={agentCount >= 5 && agentCount <= 10 ? "text-teal font-semibold" : ""}>
-                    5-10 agents: $700 each
+                  <div className={agentCount >= 3 && agentCount <= 5 ? "text-teal font-semibold" : ""}>
+                    3-5 agents: $750 each
+                  </div>
+                  <div className={agentCount >= 6 && agentCount <= 10 ? "text-teal font-semibold" : ""}>
+                    6-10 agents: $700 each
                   </div>
                   <div className={agentCount >= 11 && agentCount <= 20 ? "text-teal font-semibold" : ""}>
                     11-20 agents: $650 each
