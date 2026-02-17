@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import { setSessionCookie, signSessionToken } from "../../../../lib/auth-session";
+import { sanitizeRedirectTarget } from "../../../../lib/auth-redirect";
+import { createPendingSignupVerification } from "../../../../lib/email-verification";
 import { createServerSupabase } from "../../../../lib/supabase-admin";
 
 export const runtime = "nodejs";
@@ -9,6 +10,7 @@ type RegisterBody = {
   email?: string;
   password?: string;
   companyName?: string;
+  next?: string;
 };
 
 function normalizeEmail(value: string): string {
@@ -25,6 +27,7 @@ export async function POST(request: Request) {
     const email = normalizeEmail(String(body.email ?? ""));
     const password = String(body.password ?? "");
     const companyName = String(body.companyName ?? "").trim();
+    const nextPath = sanitizeRedirectTarget(body.next, new URL(request.url).origin);
 
     if (!isValidEmail(email)) {
       return NextResponse.json({ error: "Invalid email." }, { status: 400 });
@@ -54,7 +57,7 @@ export async function POST(request: Request) {
 
     const existingPending = await supabase
       .from("pending_signups")
-      .select("id, status")
+      .select("id, status, email_verified_at")
       .eq("email", email)
       .maybeSingle();
 
@@ -69,6 +72,13 @@ export async function POST(request: Request) {
       );
     }
 
+    if (existingPending.data?.status === "pending" && existingPending.data?.email_verified_at) {
+      return NextResponse.json(
+        { error: "Account already registered. Please verify or log in." },
+        { status: 409 }
+      );
+    }
+
     const pendingUpsert = await supabase
       .from("pending_signups")
       .upsert(
@@ -77,6 +87,7 @@ export async function POST(request: Request) {
           password_hash: passwordHash,
           company_name: companyName || null,
           status: "pending",
+          email_verified_at: null,
           client_id: null,
           stripe_checkout_session_id: null,
           activated_at: null
@@ -92,15 +103,19 @@ export async function POST(request: Request) {
       );
     }
 
-    const token = signSessionToken({
-      session_type: "pending",
-      pending_signup_id: pendingUpsert.data.id,
-      email: pendingUpsert.data.email
+    const verification = await createPendingSignupVerification({
+      pendingSignupId: pendingUpsert.data.id,
+      email: pendingUpsert.data.email,
+      nextPath
     });
 
-    const response = NextResponse.json({ ok: true });
-    setSessionCookie(response, token);
-    return response;
+    return NextResponse.json({
+      ok: true,
+      requires_email_verification: true,
+      message: "Please check your inbox and verify your email before logging in.",
+      dev_verification_url:
+        process.env.NODE_ENV === "production" ? undefined : verification.verificationUrl
+    });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Registration failed.";
     return NextResponse.json({ error: message }, { status: 500 });

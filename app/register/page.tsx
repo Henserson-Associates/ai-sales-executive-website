@@ -44,6 +44,8 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [devVerificationUrl, setDevVerificationUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -53,27 +55,47 @@ export default function RegisterPage() {
     }
 
     setError(null);
+    setSuccess(null);
+    setDevVerificationUrl(null);
     setIsLoading(true);
     try {
+      const nextPath = getNextPath();
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, companyName: companyName || undefined })
+        body: JSON.stringify({
+          email,
+          password,
+          companyName: companyName || undefined,
+          next: nextPath
+        })
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) {
         throw new Error(payload?.error ?? "Registration failed.");
       }
 
-      const nextPath = getNextPath();
-      router.push(nextPath);
-      router.refresh();
+      setSuccess(
+        String(
+          payload?.message ?? "Registration successful. Please verify your email before logging in."
+        )
+      );
+      if (typeof payload?.dev_verification_url === "string") {
+        setDevVerificationUrl(payload.dev_verification_url);
+      }
+      setIsLoading(false);
     } catch (submitError) {
       const message =
         submitError instanceof Error ? submitError.message : "Registration failed.";
       setError(message);
       setIsLoading(false);
     }
+  };
+
+  const onGoogleRegister = () => {
+    const nextPath = getNextPath();
+    const target = `/api/auth/google/start?next=${encodeURIComponent(nextPath)}`;
+    router.push(target);
   };
 
   return (
@@ -127,6 +149,15 @@ export default function RegisterPage() {
           />
 
           {error && <p className="mt-4 text-sm text-rose-300">{error}</p>}
+          {success && <p className="mt-4 text-sm text-emerald-300">{success}</p>}
+          {devVerificationUrl && (
+            <p className="mt-2 text-xs text-slate-300">
+              Dev link:{" "}
+              <a href={devVerificationUrl} className="underline hover:text-white">
+                Verify email now
+              </a>
+            </p>
+          )}
 
           <button
             type="submit"
@@ -134,6 +165,15 @@ export default function RegisterPage() {
             className="mt-6 w-full rounded-xl bg-teal px-5 py-3 text-sm font-bold text-ink transition hover:opacity-90 disabled:opacity-60"
           >
             {isLoading ? "Creating account..." : "Create account"}
+          </button>
+
+          <button
+            type="button"
+            onClick={onGoogleRegister}
+            disabled={isLoading}
+            className="mt-3 w-full rounded-xl border border-white/25 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10 disabled:opacity-60"
+          >
+            Continue with Google
           </button>
 
           <p className="mt-5 text-sm text-slate-300">

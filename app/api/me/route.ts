@@ -35,7 +35,7 @@ export async function GET() {
 
   const pendingResult = await supabase
     .from("pending_signups")
-    .select("company_name")
+    .select("company_name, email_verified_at")
     .eq("id", session.pending_signup_id)
     .maybeSingle();
 
@@ -47,6 +47,7 @@ export async function GET() {
     session_type: "pending",
     email: session.email,
     pending_signup_id: session.pending_signup_id,
-    company_name: pendingResult.data?.company_name ?? null
+    company_name: pendingResult.data?.company_name ?? null,
+    email_verified: Boolean(pendingResult.data?.email_verified_at)
   });
 }

@@ -6,6 +6,7 @@ type PendingSignupRow = {
   password_hash: string;
   company_name: string | null;
   status: "pending" | "activated" | "expired";
+  email_verified_at: string | null;
   client_id: string | null;
 };
 
@@ -18,7 +19,7 @@ export async function getPendingSignupById(id: string): Promise<PendingSignupRow
   const supabase = createServerSupabase();
   const result = await supabase
     .from("pending_signups")
-    .select("id, email, password_hash, company_name, status, client_id")
+    .select("id, email, password_hash, company_name, status, email_verified_at, client_id")
     .eq("id", id)
     .maybeSingle();
 
@@ -48,6 +49,10 @@ export async function activatePendingSignupFromCheckout(input: {
 
   if (pending.status !== "pending") {
     throw new Error(`Pending signup is not active (status: ${pending.status}).`);
+  }
+
+  if (!pending.email_verified_at) {
+    throw new Error("Pending signup email is not verified.");
   }
 
   const clientName =

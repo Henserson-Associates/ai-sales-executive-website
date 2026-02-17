@@ -132,6 +132,13 @@ export async function POST(request: Request) {
         );
       }
 
+      if (pendingSignup.status === "pending" && !pendingSignup.email_verified_at) {
+        return NextResponse.json(
+          { error: "Please verify your email before starting checkout." },
+          { status: 403 }
+        );
+      }
+
       metadata.pending_signup_id = pendingSignup.id;
       metadata.pending_signup_email = pendingSignup.email;
       idempotencyPrincipal = `pending_${pendingSignup.id}`;

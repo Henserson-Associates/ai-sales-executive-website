@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 function getNextPath(): string {
   if (typeof window === "undefined") {
@@ -43,7 +43,23 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const verificationError = params.get("error");
+    const verified = params.get("verified");
+    if (verificationError) {
+      setError(verificationError);
+    } else if (verified === "1") {
+      setInfo("Email verified. Please log in.");
+    }
+  }, []);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -52,6 +68,7 @@ export default function LoginPage() {
     }
 
     setError(null);
+    setInfo(null);
     setIsLoading(true);
     try {
       const response = await fetch("/api/auth/login", {
@@ -72,6 +89,12 @@ export default function LoginPage() {
       setError(message);
       setIsLoading(false);
     }
+  };
+
+  const onGoogleLogin = () => {
+    const nextPath = getNextPath();
+    const target = `/api/auth/google/start?next=${encodeURIComponent(nextPath)}`;
+    router.push(target);
   };
 
   return (
@@ -117,6 +140,7 @@ export default function LoginPage() {
           />
 
           {error && <p className="mt-4 text-sm text-rose-300">{error}</p>}
+          {info && <p className="mt-4 text-sm text-emerald-300">{info}</p>}
 
           <button
             type="submit"
@@ -124,6 +148,15 @@ export default function LoginPage() {
             className="mt-6 w-full rounded-xl bg-teal px-5 py-3 text-sm font-bold text-ink transition hover:opacity-90 disabled:opacity-60"
           >
             {isLoading ? "Logging in..." : "Log in"}
+          </button>
+
+          <button
+            type="button"
+            onClick={onGoogleLogin}
+            disabled={isLoading}
+            className="mt-3 w-full rounded-xl border border-white/25 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10 disabled:opacity-60"
+          >
+            Continue with Google
           </button>
 
           <p className="mt-5 text-sm text-slate-300">

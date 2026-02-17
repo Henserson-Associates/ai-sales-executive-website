@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     if (!token) {
       const pendingLookup = await supabase
         .from("pending_signups")
-        .select("id, email, password_hash, status, created_at")
+        .select("id, email, password_hash, status, email_verified_at, created_at")
         .eq("email", email)
         .order("created_at", { ascending: false })
         .limit(1)
@@ -69,6 +69,13 @@ export async function POST(request: Request) {
       const pending = pendingLookup.data;
       if (!pending?.id || pending.status !== "pending") {
         return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
+      }
+
+      if (!pending.email_verified_at) {
+        return NextResponse.json(
+          { error: "Please verify your email before logging in." },
+          { status: 403 }
+        );
       }
 
       const pendingMatch = await bcrypt.compare(password, pending.password_hash);
