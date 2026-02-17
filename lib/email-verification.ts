@@ -37,10 +37,13 @@ function buildVerificationUrl(token: string, next: string | null | undefined): s
 
 function buildVerificationEmailHtml(url: string): string {
   return [
-    "<p>Thanks for registering with LeadNexa.</p>",
-    "<p>Please confirm your email address to continue:</p>",
-    `<p><a href="${url}">Verify Email</a></p>`,
-    `<p>This link expires in ${EMAIL_VERIFICATION_TTL_HOURS} hours.</p>`
+    "<div style=\"font-family:Arial,Helvetica,sans-serif;line-height:1.6;color:#0f172a;max-width:560px;\">",
+    "<h2 style=\"margin:0 0 12px 0;color:#0f172a;\">Verify your LeadNexa email</h2>",
+    "<p style=\"margin:0 0 14px 0;\">Thanks for signing up for LeadNexa. Please verify your email address to continue.</p>",
+    `<p style=\"margin:0 0 18px 0;\"><a href="${url}" style=\"display:inline-block;background:#22d3ee;color:#082f49;text-decoration:none;font-weight:700;padding:10px 16px;border-radius:8px;\">Verify Email</a></p>`,
+    `<p style=\"margin:0 0 10px 0;\">This verification link expires in ${EMAIL_VERIFICATION_TTL_HOURS} hours.</p>`,
+    `<p style=\"margin:0;color:#334155;\">If the button does not work, paste this URL in your browser:<br/><a href="${url}" style=\"color:#0ea5e9;word-break:break-all;\">${url}</a></p>`,
+    "</div>"
   ].join("");
 }
 
@@ -73,9 +76,16 @@ export async function createPendingSignupVerification(input: {
   const verificationUrl = buildVerificationUrl(token, input.nextPath);
   await sendEmail({
     to: input.email,
-    subject: "Verify your LeadNexa email",
+    subject: "Action required: verify your LeadNexa email",
     html: buildVerificationEmailHtml(verificationUrl),
-    text: `Verify your email: ${verificationUrl}`
+    text: [
+      "Welcome to LeadNexa.",
+      "Please verify your email address to continue.",
+      "",
+      `Verify now: ${verificationUrl}`,
+      "",
+      `This link expires in ${EMAIL_VERIFICATION_TTL_HOURS} hours.`
+    ].join("\n")
   });
 
   return { verificationUrl };

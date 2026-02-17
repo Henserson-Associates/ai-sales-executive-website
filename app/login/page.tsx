@@ -4,6 +4,29 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 
+function GoogleLogo() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-4 w-4">
+      <path
+        fill="#EA4335"
+        d="M12 10.2v3.9h5.5c-.2 1.3-1.6 3.8-5.5 3.8-3.3 0-6-2.8-6-6.2s2.7-6.2 6-6.2c1.9 0 3.2.8 3.9 1.5l2.7-2.6C16.9 2.8 14.7 2 12 2 6.9 2 2.8 6.2 2.8 11.3s4.1 9.3 9.2 9.3c5.3 0 8.8-3.8 8.8-9.1 0-.6-.1-1-.1-1.4H12z"
+      />
+      <path
+        fill="#34A853"
+        d="M2.8 11.3c0 1.6.4 3 1.2 4.3l3.4-2.6c-.2-.5-.4-1.1-.4-1.7s.1-1.2.4-1.7L4 7C3.2 8.3 2.8 9.7 2.8 11.3z"
+      />
+      <path
+        fill="#4A90E2"
+        d="M12 20.6c2.5 0 4.6-.8 6.1-2.2l-3-2.4c-.8.6-1.8 1-3.1 1-2.4 0-4.5-1.6-5.2-3.9L3.4 15.7c1.6 3 4.8 4.9 8.6 4.9z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M6.8 13.1c-.2-.5-.4-1.1-.4-1.8s.1-1.2.4-1.8L3.4 7C2.6 8.3 2.2 9.7 2.2 11.3s.4 3 1.2 4.3l3.4-2.5z"
+      />
+    </svg>
+  );
+}
+
 function getNextPath(): string {
   if (typeof window === "undefined") {
     return "/";
@@ -154,8 +177,9 @@ export default function LoginPage() {
             type="button"
             onClick={onGoogleLogin}
             disabled={isLoading}
-            className="mt-3 w-full rounded-xl border border-white/25 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10 disabled:opacity-60"
+            className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/5 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10 disabled:opacity-60"
           >
+            <GoogleLogo />
             Continue with Google
           </button>
 
