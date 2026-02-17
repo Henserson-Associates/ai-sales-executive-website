@@ -1,0 +1,156 @@
+import { sendEmail } from "./email-delivery";
+import { createServerSupabase } from "./supabase-admin";
+
+type SendPostCheckoutEmailInput = {
+  checkoutSessionId: string;
+  clientId?: string;
+  customerEmail?: string;
+  customerName?: string;
+};
+
+function getSupportEmail(): string {
+  const configured = (process.env.SUPPORT_EMAIL ?? "").trim();
+  return configured || "support@leadnexa.ai";
+}
+
+function getDashboardUrl(): string {
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "").trim();
+  return appUrl || "https://app.leadnexa.ai";
+}
+
+function getNextStepsUrl(): string {
+  const configured = (process.env.NEXT_STEPS_URL ?? "").trim();
+  return configured || getDashboardUrl();
+}
+
+function formatPeriodEnd(value: string | null): string {
+  if (!value) {
+    return "your next billing cycle date";
+  }
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "your next billing cycle date";
+  }
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+
+export async function sendPostCheckoutConfirmationEmail(
+  input: SendPostCheckoutEmailInput
+): Promise<void> {
+  const supabase = createServerSupabase();
+  const subscription = await supabase
+    .from("client_subscriptions")
+    .select(
+      "id, client_id, client_email, agents, currency, current_period_end, purchase_confirmation_sent_at"
+    )
+    .eq("stripe_checkout_session_id", input.checkoutSessionId)
+    .maybeSingle();
+
+  if (subscription.error) {
+    throw new Error(`Failed to load subscription for confirmation email: ${subscription.error.message}`);
+  }
+
+  const row = subscription.data;
+  if (!row?.id) {
+    return;
+  }
+
+  if (row.purchase_confirmation_sent_at) {
+    return;
+  }
+
+  const clientId = input.clientId?.trim() || row.client_id;
+  const resolvedClient = clientId
+    ? await supabase.from("clients").select("name").eq("id", clientId).maybeSingle()
+    : null;
+
+  if (resolvedClient?.error) {
+    throw new Error(`Failed to load client name for confirmation email: ${resolvedClient.error.message}`);
+  }
+
+  let recipient = input.customerEmail?.trim() || row.client_email?.trim() || "";
+  if (!recipient && clientId) {
+    const fallbackUser = await supabase
+      .from("app_users")
+      .select("email")
+      .eq("client_id", clientId)
+      .order("created_at", { ascending: true })
+      .limit(1)
+      .maybeSingle();
+
+    if (fallbackUser.error) {
+      throw new Error(`Failed to resolve fallback recipient email: ${fallbackUser.error.message}`);
+    }
+    recipient = String(fallbackUser.data?.email ?? "").trim();
+  }
+
+  if (!recipient) {
+    return;
+  }
+
+  const accountName =
+    resolvedClient?.data?.name?.trim() ||
+    input.customerName?.trim() ||
+    recipient.split("@")[0] ||
+    "there";
+  const periodEnd = formatPeriodEnd(row.current_period_end ?? null);
+  const dashboardUrl = getDashboardUrl();
+  const nextStepsUrl = getNextStepsUrl();
+  const supportEmail = getSupportEmail();
+
+  const subject = "LeadNexa payment confirmed - next steps";
+  const html = [
+    "<div style=\"font-family:Arial,Helvetica,sans-serif;line-height:1.6;color:#0f172a;max-width:620px;\">",
+    `<h2 style=\"margin:0 0 12px 0;\">Payment confirmed, ${accountName}</h2>`,
+    "<p style=\"margin:0 0 12px 0;\">Thanks for choosing LeadNexa. Your subscription is now active.</p>",
+    `<p style=\"margin:0 0 12px 0;\">Plan summary: <strong>${row.agents} agent(s)</strong>, billed in <strong>${String(row.currency ?? "usd").toUpperCase()}</strong>.</p>`,
+    `<p style=\"margin:0 0 16px 0;\">Current billing period ends on <strong>${periodEnd}</strong>.</p>`,
+    "<p style=\"margin:0 0 8px 0;\"><strong>What happens next:</strong></p>",
+    "<ol style=\"margin:0 0 16px 20px;padding:0;\">",
+    "<li>We provision your account and workspace linkage.</li>",
+    "<li>You can log in to the dashboard and start handling conversations.</li>",
+    "<li>If your workspace is not linked yet, our team will complete setup shortly.</li>",
+    "</ol>",
+    `<p style=\"margin:0 0 12px 0;\"><a href=\"${dashboardUrl}\" style=\"display:inline-block;background:#22d3ee;color:#082f49;text-decoration:none;font-weight:700;padding:10px 16px;border-radius:8px;\">Open Dashboard</a></p>`,
+    `<p style=\"margin:0 0 8px 0;\">Setup checklist: <a href=\"${nextStepsUrl}\" style=\"color:#0ea5e9;\">${nextStepsUrl}</a></p>`,
+    `<p style=\"margin:0;\">Need help? Reply to this email or contact <a href=\"mailto:${supportEmail}\" style=\"color:#0ea5e9;\">${supportEmail}</a>.</p>`,
+    "</div>"
+  ].join("");
+  const text = [
+    `Payment confirmed, ${accountName}.`,
+    "",
+    "Your LeadNexa subscription is active.",
+    `Plan: ${row.agents} agent(s), billed in ${String(row.currency ?? "usd").toUpperCase()}.`,
+    `Current billing period ends on ${periodEnd}.`,
+    "",
+    "Next steps:",
+    "1) We provision your account and workspace linkage.",
+    "2) You can log in to the dashboard and start handling conversations.",
+    "3) If your workspace is not linked yet, our team will complete setup shortly.",
+    "",
+    `Dashboard: ${dashboardUrl}`,
+    `Setup checklist: ${nextStepsUrl}`,
+    `Support: ${supportEmail}`
+  ].join("\n");
+
+  await sendEmail({
+    to: recipient,
+    subject,
+    html,
+    text
+  });
+
+  const markSent = await supabase
+    .from("client_subscriptions")
+    .update({ purchase_confirmation_sent_at: new Date().toISOString() })
+    .eq("id", row.id)
+    .is("purchase_confirmation_sent_at", null);
+
+  if (markSent.error) {
+    throw new Error(`Failed to mark confirmation email as sent: ${markSent.error.message}`);
+  }
+}

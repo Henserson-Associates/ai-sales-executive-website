@@ -63,7 +63,7 @@ function getNextPath(): string {
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [companyName, setCompanyName] = useState("");
+  const [accountName, setAccountName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -89,7 +89,7 @@ export default function RegisterPage() {
         body: JSON.stringify({
           email,
           password,
-          companyName: companyName || undefined,
+          companyName: accountName || undefined,
           next: nextPath
         })
       });
@@ -144,11 +144,11 @@ export default function RegisterPage() {
           </div>
           <p className="mt-2 text-sm text-slate-300">Create your account before starting checkout.</p>
 
-          <label className="mt-6 block text-left text-sm font-medium text-slate-200">Company name</label>
+          <label className="mt-6 block text-left text-sm font-medium text-slate-200">Account name</label>
           <input
             type="text"
-            value={companyName}
-            onChange={(event) => setCompanyName(event.target.value)}
+            value={accountName}
+            onChange={(event) => setAccountName(event.target.value)}
             className="mt-2 w-full rounded-xl border border-white/20 bg-slate-950/70 px-4 py-3 text-white outline-none transition focus:border-teal/50"
           />
 

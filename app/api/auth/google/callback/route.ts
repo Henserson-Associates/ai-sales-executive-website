@@ -133,6 +133,7 @@ export async function GET(request: Request) {
     }
 
     let sessionToken: string;
+    let requiresAccountNameOnboarding = false;
     const appUser = appUserResult.data;
     if (appUser?.id && appUser.is_active) {
       sessionToken = signSessionToken({
@@ -156,6 +157,7 @@ export async function GET(request: Request) {
       }
 
       let pendingId = pendingLookup.data?.id ?? null;
+      let pendingCompanyName = pendingLookup.data?.company_name ?? null;
       if (!pendingId) {
         const generatedPasswordHash = await bcrypt.hash(
           `google:${userInfo.sub}:${Date.now()}:${Math.random()}`,
@@ -167,7 +169,7 @@ export async function GET(request: Request) {
           .insert({
             email,
             password_hash: generatedPasswordHash,
-            company_name: userInfo.name?.trim() || null,
+            company_name: null,
             status: "pending",
             email_verified_at: new Date().toISOString(),
             client_id: null,
@@ -184,6 +186,7 @@ export async function GET(request: Request) {
         }
 
         pendingId = insertPending.data.id;
+        pendingCompanyName = null;
       } else {
         if (pendingLookup.data?.status === "expired") {
           const resetPending = await supabase
@@ -209,6 +212,8 @@ export async function GET(request: Request) {
         }
       }
 
+      requiresAccountNameOnboarding = !String(pendingCompanyName ?? "").trim();
+
       sessionToken = signSessionToken({
         session_type: "pending",
         email,
@@ -216,7 +221,12 @@ export async function GET(request: Request) {
       });
     }
 
-    const redirectUrl = new URL(nextTarget, requestUrl.origin);
+    const redirectUrl = requiresAccountNameOnboarding
+      ? new URL(
+          `/onboarding/account-name?next=${encodeURIComponent(nextTarget)}`,
+          requestUrl.origin
+        )
+      : new URL(nextTarget, requestUrl.origin);
     const response = NextResponse.redirect(redirectUrl);
     setSessionCookie(response, sessionToken);
     response.cookies.delete(GOOGLE_STATE_COOKIE);

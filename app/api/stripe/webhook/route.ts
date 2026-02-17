@@ -6,6 +6,7 @@ import {
   updateClientSubscriptionFromStripeSubscription
 } from "../../../../lib/subscription-records";
 import { activatePendingSignupFromCheckout } from "../../../../lib/pending-signups";
+import { sendPostCheckoutConfirmationEmail } from "../../../../lib/post-checkout-email";
 import { stripe } from "../../../../lib/stripe";
 
 export const runtime = "nodejs";
@@ -76,6 +77,13 @@ export async function POST(request: Request) {
         customerEmail,
         stripeCustomerId,
         stripeSubscription: subscription
+      });
+
+      await sendPostCheckoutConfirmationEmail({
+        checkoutSessionId: session.id,
+        clientId: explicitClientId || undefined,
+        customerEmail,
+        customerName
       });
     }
 

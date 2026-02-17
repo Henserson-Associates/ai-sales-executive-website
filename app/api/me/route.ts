@@ -29,7 +29,8 @@ export async function GET() {
       user_id: session.user_id,
       client_id: session.client_id,
       role: session.role,
-      company_name: clientResult.data?.name ?? null
+      company_name: clientResult.data?.name ?? null,
+      account_name: clientResult.data?.name ?? null
     });
   }
 
@@ -48,6 +49,7 @@ export async function GET() {
     email: session.email,
     pending_signup_id: session.pending_signup_id,
     company_name: pendingResult.data?.company_name ?? null,
+    account_name: pendingResult.data?.company_name ?? null,
     email_verified: Boolean(pendingResult.data?.email_verified_at)
   });
 }
