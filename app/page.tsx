@@ -1,7 +1,6 @@
 ﻿"use client";
-
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import {
   ArrowRight,
@@ -21,7 +20,9 @@ import {
   Bot,
   Activity,
   ChevronDown,
-  Star
+  Star,
+  Menu, 
+  X,
 } from "lucide-react";
 
 // --- Data Definitions ---
@@ -380,6 +381,7 @@ const UIMockup = () => (
 );
 
 export default function HomePage() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
   const [authError, setAuthError] = useState<string | null>(null);
@@ -543,97 +545,67 @@ export default function HomePage() {
         <div className="pointer-events-none absolute top-32 -left-32 h-96 w-96 rounded-full bg-teal/10 blur-[160px]" />
 
         <header className="sticky top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-xl">
-          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-            <a
-              href="/"
-              className="flex items-center transition-opacity hover:opacity-90"
-            >
-              <Image src="/logo.png" alt="LeadNexa logo" width={170} height={40} className="h-9 w-auto" priority />
-            </a>
-            <nav className="hidden items-center gap-10 text-sm font-medium text-white/60 md:flex">
-              <a href="#how" className="hover:text-teal transition-colors">
-                How it works
-              </a>
-              <a href="#case-studies" className="hover:text-teal transition-colors">
-                Case Studies
-              </a>
-              <a href="#comparison" className="hover:text-teal transition-colors">
-                Why AI Agents
-              </a>
-              {showIntegrations && (
-                <a href="#integrations" className="hover:text-teal transition-colors">
-                  Integrations
-                </a>
-              )}
-              <a href="#pricing" className="hover:text-teal transition-colors">
-                Pricing
-              </a>
-            </nav>
-            <div className="flex items-center gap-2 sm:gap-4">
-              {authResolved &&
-                (isAuthenticated ? (
-                  <div className="relative" ref={accountMenuRef}>
-                    <button
-                      type="button"
-                      onClick={() => setIsAccountMenuOpen((open) => !open)}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-teal/40 hover:bg-white/10"
-                    >
-                      <span className="max-w-[140px] truncate">{companyName || "Account"}</span>
-                      <ChevronDown className="h-4 w-4 text-white/70" />
-                    </button>
-                    {isAccountMenuOpen && (
-                      <div className="absolute right-0 top-[calc(100%+8px)] z-50 min-w-[160px] rounded-xl border border-white/15 bg-slate-900/95 p-2 shadow-xl backdrop-blur">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setIsAccountMenuOpen(false);
-                            window.location.assign(`${dashboardUrl}/portal`);
-                          }}
-                          className="mb-1 w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-white transition hover:bg-white/10"
-                        >
-                          Go to Dashboard
-                        </button>
-                        <button
-                          type="button"
-                          onClick={handleLogout}
-                          disabled={isLoggingOut}
-                          className="w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-white transition hover:bg-white/10 disabled:opacity-60"
-                        >
-                          {isLoggingOut ? "Logging out..." : "Logout"}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <>
-                    <a
-                      href="/login?next=/#pricing"
-                      className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-teal/40 hover:bg-white/10"
-                    >
-                      Login
-                    </a>
-                    <a
-                      href="/register?next=/#pricing"
-                      className="rounded-full border border-teal/40 bg-teal/10 px-4 py-2 text-sm font-semibold text-teal transition hover:bg-teal/20"
-                    >
-                      Register
-                    </a>
-                  </>
-                ))}
-              <a
-                href="/talk-to-our-team"
-                className="rounded-full bg-teal px-6 py-2.5 text-sm font-bold text-ink shadow-glow transition hover:-translate-y-0.5"
-              >
-                Talk to Our Team
-              </a>
-            </div>
+  <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    {/* Logo */}
+    <a href="/" className="flex items-center shrink-0 transition-opacity hover:opacity-90">
+      <Image src="/logo.png" alt="LeadNexa logo" width={150} height={32} className="h-8 w-auto" priority />
+    </a>
+
+    {/* Desktop Navigation - Hidden on mobile, flex on medium screens+ */}
+    <nav className="hidden items-center gap-8 text-sm font-medium text-white/60 lg:flex">
+      <a href="#how" className="hover:text-teal transition-colors">How it works</a>
+      <a href="#case-studies" className="hover:text-teal transition-colors">Case Studies</a>
+      <a href="#comparison" className="hover:text-teal transition-colors">Why AI Agents</a>
+      <a href="#pricing" className="hover:text-teal transition-colors">Pricing</a>
+    </nav>
+
+    <div className="flex items-center gap-3">
+      {/* Auth/CTA Buttons - Hidden on small mobile to prevent overlap */}
+      <div className="hidden sm:flex items-center gap-3">
+        {authResolved && !isAuthenticated && (
+          <a href="/login" className="text-sm font-semibold text-white/60 hover:text-white px-3">Login</a>
+        )}
+        <a
+          href="/talk-to-our-team"
+          className="rounded-full bg-teal px-5 py-2 text-sm font-bold text-ink shadow-glow transition hover:-translate-y-0.5"
+        >
+          Talk to Us
+        </a>
+      </div>
+
+      {/* Mobile Menu Toggle - Only visible on mobile/tablet */}
+      <button 
+        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        className="p-2 text-white lg:hidden hover:bg-white/10 rounded-lg transition-colors"
+      >
+        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+    </div>
+  </div>
+
+  {/* Mobile Dropdown Menu */}
+  <AnimatePresence>
+    {isMobileMenuOpen && (
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        className="absolute top-full left-0 w-full border-b border-white/10 bg-slate-900/95 backdrop-blur-xl lg:hidden"
+      >
+        <div className="flex flex-col p-6 gap-4">
+          <a href="#how" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-white/70">How it works</a>
+          <a href="#case-studies" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-white/70">Case Studies</a>
+          <a href="#comparison" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-white/70">Why AI Agents</a>
+          <a href="#pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-lg text-white/70">Pricing</a>
+          <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
+             <a href="/login" className="text-center text-white/70 py-2">Login</a>
+             <a href="/talk-to-our-team" className="text-center rounded-full bg-teal py-3 text-ink font-bold">Talk to Our Team</a>
           </div>
-          {authError && (
-            <div className="mx-auto max-w-7xl px-6 pb-3">
-              <p className="text-right text-xs text-rose-300">{authError}</p>
-            </div>
-          )}
-        </header>
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>
+</header>
 
         <main>
           {/* Hero Section */}
