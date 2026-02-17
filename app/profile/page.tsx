@@ -1,74 +1,77 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FormEvent, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
-function getSafeNext(): string {
-  if (typeof window === "undefined") {
-    return "/";
-  }
-  const rawNext = new URLSearchParams(window.location.search).get("next");
-  if (!rawNext) {
-    return "/";
-  }
+type ProfileResponse = {
+  account_name?: string | null;
+};
 
-  if (rawNext.startsWith("/")) {
-    return rawNext;
-  }
-
-  try {
-    const parsed = new URL(rawNext);
-    const allowList = new Set<string>([
-      window.location.origin,
-      process.env.NEXT_PUBLIC_APP_URL ?? "",
-      ...(process.env.NEXT_PUBLIC_ALLOWED_REDIRECT_ORIGINS ?? "")
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean)
-    ]);
-    if (allowList.has(parsed.origin)) {
-      return parsed.toString();
-    }
-  } catch {
-    return "/";
-  }
-  return "/";
-}
-
-export default function AccountNameOnboardingPage() {
-  const router = useRouter();
+export default function ProfilePage() {
   const [accountName, setAccountName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const nextTarget = useMemo(() => getSafeNext(), []);
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    let mounted = true;
+    const loadProfile = async () => {
+      try {
+        const response = await fetch("/api/account/profile", { method: "GET" });
+        const payload = (await response.json().catch(() => ({}))) as ProfileResponse;
+        if (!response.ok) {
+          throw new Error("Unable to load profile.");
+        }
+        if (mounted) {
+          setAccountName(String(payload.account_name ?? ""));
+        }
+      } catch (loadError) {
+        if (mounted) {
+          const message = loadError instanceof Error ? loadError.message : "Unable to load profile.";
+          setError(message);
+        }
+      } finally {
+        if (mounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+    void loadProfile();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const onSave = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (isLoading) {
+    if (isSaving) {
       return;
     }
 
     setError(null);
-    setIsLoading(true);
+    setSuccess(null);
+    setIsSaving(true);
     try {
       const response = await fetch("/api/account/profile", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ accountName })
       });
-      const payload = await response.json().catch(() => ({}));
+      const payload = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        account_name?: string;
+      };
       if (!response.ok) {
-        throw new Error(payload?.error ?? "Unable to save account name.");
+        throw new Error(payload.error ?? "Unable to update account name.");
       }
-
-      router.push(nextTarget);
-      router.refresh();
-    } catch (submitError) {
-      const message =
-        submitError instanceof Error ? submitError.message : "Unable to save account name.";
+      setAccountName(String(payload.account_name ?? accountName));
+      setSuccess("Account name updated.");
+    } catch (saveError) {
+      const message = saveError instanceof Error ? saveError.message : "Unable to update account name.";
       setError(message);
-      setIsLoading(false);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -78,13 +81,13 @@ export default function AccountNameOnboardingPage() {
       <div className="pointer-events-none absolute inset-0 opacity-40 [background-image:linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:32px_32px]" />
       <div className="relative mx-auto flex min-h-screen max-w-md items-center px-6">
         <form
-          onSubmit={onSubmit}
+          onSubmit={onSave}
           className="w-full rounded-3xl border border-white/15 bg-slate-900/60 p-8 shadow-[0_20px_80px_rgba(2,6,23,0.6)] backdrop-blur-md"
         >
           <div className="mb-2 flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-teal">One Last Step</p>
-              <h1 className="mt-2 text-3xl font-bold">Set Account Name</h1>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-teal">Settings</p>
+              <h1 className="mt-2 text-3xl font-bold">Profile</h1>
             </div>
             <Link
               href="/"
@@ -93,9 +96,8 @@ export default function AccountNameOnboardingPage() {
               Home
             </Link>
           </div>
-          <p className="mt-2 text-sm text-slate-300">
-            Choose an account name. You can change it later in settings.
-          </p>
+
+          <p className="mt-2 text-sm text-slate-300">Update your account name.</p>
 
           <label className="mt-6 block text-left text-sm font-medium text-slate-200">Account name</label>
           <input
@@ -106,16 +108,18 @@ export default function AccountNameOnboardingPage() {
             value={accountName}
             onChange={(event) => setAccountName(event.target.value)}
             className="mt-2 w-full rounded-xl border border-white/20 bg-slate-950/70 px-4 py-3 text-white outline-none transition focus:border-teal/50"
+            disabled={isLoading || isSaving}
           />
 
           {error && <p className="mt-4 text-sm text-rose-300">{error}</p>}
+          {success && <p className="mt-4 text-sm text-emerald-300">{success}</p>}
 
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || isSaving}
             className="mt-6 w-full rounded-xl bg-teal px-5 py-3 text-sm font-bold text-ink transition hover:opacity-90 disabled:opacity-60"
           >
-            {isLoading ? "Saving..." : "Continue"}
+            {isSaving ? "Saving..." : "Save"}
           </button>
         </form>
       </div>

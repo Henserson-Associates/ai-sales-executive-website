@@ -600,6 +600,16 @@ export default function HomePage() {
                           </button>
                           <button
                             type="button"
+                            onClick={() => {
+                              setIsAccountMenuOpen(false);
+                              window.location.assign("/profile");
+                            }}
+                            className="mb-1 w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-white transition hover:bg-white/10"
+                          >
+                            Profile
+                          </button>
+                          <button
+                            type="button"
                             onClick={handleLogout}
                             disabled={isLoggingOut}
                             className="w-full rounded-lg px-3 py-2 text-left text-sm font-semibold text-white transition hover:bg-white/10 disabled:opacity-60"
@@ -684,6 +694,16 @@ export default function HomePage() {
                             className="rounded-full border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:border-teal/40 hover:bg-white/10"
                           >
                             Go to Dashboard
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setIsMobileMenuOpen(false);
+                              window.location.assign("/profile");
+                            }}
+                            className="rounded-full border border-white/20 bg-white/5 px-4 py-3 text-sm font-semibold text-white transition hover:border-teal/40 hover:bg-white/10"
+                          >
+                            Profile
                           </button>
                           <button
                             type="button"
