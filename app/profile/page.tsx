@@ -4,11 +4,21 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type ProfileResponse = {
+  email?: string | null;
   account_name?: string | null;
+  subscription?: {
+    is_subscribed?: boolean;
+    status?: string | null;
+    agents?: number | null;
+    price_id?: string | null;
+    current_period_end?: string | null;
+  };
 };
 
 export default function ProfilePage() {
   const [accountName, setAccountName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subscriptionText, setSubscriptionText] = useState("Pending");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,6 +35,18 @@ export default function ProfilePage() {
         }
         if (mounted) {
           setAccountName(String(payload.account_name ?? ""));
+          setEmail(String(payload.email ?? ""));
+          const subscription = payload.subscription;
+          if (!subscription || subscription.status === "pending") {
+            setSubscriptionText("Pending - complete checkout to activate");
+          } else if (subscription.is_subscribed) {
+            const agents = typeof subscription.agents === "number" ? `${subscription.agents} agents` : "Active";
+            setSubscriptionText(`${agents} (${subscription.status ?? "active"})`);
+          } else if (subscription.status) {
+            setSubscriptionText(`Inactive (${subscription.status})`);
+          } else {
+            setSubscriptionText("No active subscription");
+          }
         }
       } catch (loadError) {
         if (mounted) {
@@ -93,11 +115,26 @@ export default function ProfilePage() {
               href="/"
               className="mt-1 rounded-full border border-white/20 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/85 transition hover:border-teal/40 hover:bg-white/10 hover:text-white"
             >
-              Home
+              Back
             </Link>
           </div>
 
-          <p className="mt-2 text-sm text-slate-300">Update your account name.</p>
+          <p className="mt-2 text-sm text-slate-300">View your account details and update your account name.</p>
+
+          <div className="mt-6 space-y-3 rounded-xl border border-white/15 bg-slate-950/50 p-4">
+            <div>
+              <p className="text-xs uppercase tracking-[0.15em] text-slate-400">Current Account Name</p>
+              <p className="mt-1 text-sm font-semibold text-white">{accountName || "Not set"}</p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.15em] text-slate-400">Email</p>
+              <p className="mt-1 text-sm font-semibold text-white">{email || "Unknown"}</p>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.15em] text-slate-400">Subscription</p>
+              <p className="mt-1 text-sm font-semibold text-white">{subscriptionText}</p>
+            </div>
+          </div>
 
           <label className="mt-6 block text-left text-sm font-medium text-slate-200">Account name</label>
           <input
