@@ -10,17 +10,7 @@ type SendPostCheckoutEmailInput = {
 
 function getSupportEmail(): string {
   const configured = (process.env.SUPPORT_EMAIL ?? "").trim();
-  return configured || "support@leadnexa.ai";
-}
-
-function getDashboardUrl(): string {
-  const appUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "").trim();
-  return appUrl || "https://app.leadnexa.ai";
-}
-
-function getNextStepsUrl(): string {
-  const configured = (process.env.NEXT_STEPS_URL ?? "").trim();
-  return configured || getDashboardUrl();
+  return configured || "sam@leadnexa.ai";
 }
 
 function formatPeriodEnd(value: string | null): string {
@@ -98,8 +88,7 @@ export async function sendPostCheckoutConfirmationEmail(
     recipient.split("@")[0] ||
     "there";
   const periodEnd = formatPeriodEnd(row.current_period_end ?? null);
-  const dashboardUrl = getDashboardUrl();
-  const nextStepsUrl = getNextStepsUrl();
+  const onboardingUrl = "https://cal.com/team/leadnexa/on-boarding-meeting";
   const supportEmail = getSupportEmail();
 
   const subject = "LeadNexa payment confirmed - next steps";
@@ -111,12 +100,9 @@ export async function sendPostCheckoutConfirmationEmail(
     `<p style=\"margin:0 0 16px 0;\">Current billing period ends on <strong>${periodEnd}</strong>.</p>`,
     "<p style=\"margin:0 0 8px 0;\"><strong>What happens next:</strong></p>",
     "<ol style=\"margin:0 0 16px 20px;padding:0;\">",
-    "<li>We provision your account and workspace linkage.</li>",
-    "<li>You can log in to the dashboard and start handling conversations.</li>",
-    "<li>If your workspace is not linked yet, our team will complete setup shortly.</li>",
+    `<li>Please schedule your onboarding meeting here: <a href=\"${onboardingUrl}\" style=\"color:#0ea5e9;\">${onboardingUrl}</a></li>`,
+    "<li>During the onboarding meeting, our team will walk you through all next steps and setup details.</li>",
     "</ol>",
-    `<p style=\"margin:0 0 12px 0;\"><a href=\"${dashboardUrl}\" style=\"display:inline-block;background:#22d3ee;color:#082f49;text-decoration:none;font-weight:700;padding:10px 16px;border-radius:8px;\">Open Dashboard</a></p>`,
-    `<p style=\"margin:0 0 8px 0;\">Setup checklist: <a href=\"${nextStepsUrl}\" style=\"color:#0ea5e9;\">${nextStepsUrl}</a></p>`,
     `<p style=\"margin:0;\">Need help? Reply to this email or contact <a href=\"mailto:${supportEmail}\" style=\"color:#0ea5e9;\">${supportEmail}</a>.</p>`,
     "</div>"
   ].join("");
@@ -128,12 +114,9 @@ export async function sendPostCheckoutConfirmationEmail(
     `Current billing period ends on ${periodEnd}.`,
     "",
     "Next steps:",
-    "1) We provision your account and workspace linkage.",
-    "2) You can log in to the dashboard and start handling conversations.",
-    "3) If your workspace is not linked yet, our team will complete setup shortly.",
+    `1) Please schedule your onboarding meeting: ${onboardingUrl}`,
+    "2) During the onboarding meeting, our team will walk you through all next steps and setup details.",
     "",
-    `Dashboard: ${dashboardUrl}`,
-    `Setup checklist: ${nextStepsUrl}`,
     `Support: ${supportEmail}`
   ].join("\n");
 
