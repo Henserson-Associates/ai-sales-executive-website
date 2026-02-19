@@ -10,6 +10,9 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "LeadNexa.ai",
   description: "Scalable cold email + LinkedIn outreach that books B2B meetings.",
+  icons: {
+    icon: "/icon.png"
+  },
   other: {
     "trustpilot-one-time-domain-verification-id": "4d8bf565-665f-4c79-8dd9-de8c3a11f4c1"
   }
@@ -28,4 +31,3 @@ export default function RootLayout({
     </html>
   );
 }
-
