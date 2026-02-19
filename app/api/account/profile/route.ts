@@ -19,6 +19,7 @@ type BillingRow = {
   current_period_end: string | null;
   agents: number | null;
   price_id: string | null;
+  cancel_at_period_end: boolean | null;
   created_at: string;
 };
 
@@ -131,7 +132,7 @@ export async function GET(request: Request) {
 
     const billingResult = await supabase
       .from("client_subscriptions")
-      .select("status, current_period_end, agents, price_id, created_at")
+      .select("status, current_period_end, agents, price_id, cancel_at_period_end, created_at")
       .eq("client_id", session.client_id)
       .order("created_at", { ascending: false })
       .limit(10);
@@ -153,14 +154,16 @@ export async function GET(request: Request) {
             status: latest.status,
             agents: latest.agents,
             price_id: latest.price_id,
-            current_period_end: latest.current_period_end
+            current_period_end: latest.current_period_end,
+            cancel_at_period_end: Boolean(latest.cancel_at_period_end)
           }
         : {
             is_subscribed: false,
             status: null,
             agents: null,
             price_id: null,
-            current_period_end: null
+            current_period_end: null,
+            cancel_at_period_end: false
           }
     });
 

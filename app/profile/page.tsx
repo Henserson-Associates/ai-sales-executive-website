@@ -12,15 +12,43 @@ type ProfileResponse = {
     agents?: number | null;
     price_id?: string | null;
     current_period_end?: string | null;
+    cancel_at_period_end?: boolean | null;
   };
 };
+
+type SubscriptionState = {
+  isSubscribed: boolean;
+  status: string | null;
+  agents: number | null;
+  currentPeriodEnd: string | null;
+  cancelAtPeriodEnd: boolean;
+};
+
+function getSubscriptionText(subscription: SubscriptionState | null): string {
+  if (!subscription || subscription.status === "pending") {
+    return "Pending - complete checkout to activate";
+  }
+  if (subscription.isSubscribed) {
+    const agents = typeof subscription.agents === "number" ? `${subscription.agents} agents` : "Active";
+    if (subscription.cancelAtPeriodEnd) {
+      return `${agents} (${subscription.status ?? "active"}, cancellation scheduled)`;
+    }
+    return `${agents} (${subscription.status ?? "active"})`;
+  }
+  if (subscription.status) {
+    return `Inactive (${subscription.status})`;
+  }
+  return "No active subscription";
+}
 
 export default function ProfilePage() {
   const [accountName, setAccountName] = useState("");
   const [email, setEmail] = useState("");
+  const [subscription, setSubscription] = useState<SubscriptionState | null>(null);
   const [subscriptionText, setSubscriptionText] = useState("Pending");
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
@@ -36,17 +64,18 @@ export default function ProfilePage() {
         if (mounted) {
           setAccountName(String(payload.account_name ?? ""));
           setEmail(String(payload.email ?? ""));
-          const subscription = payload.subscription;
-          if (!subscription || subscription.status === "pending") {
-            setSubscriptionText("Pending - complete checkout to activate");
-          } else if (subscription.is_subscribed) {
-            const agents = typeof subscription.agents === "number" ? `${subscription.agents} agents` : "Active";
-            setSubscriptionText(`${agents} (${subscription.status ?? "active"})`);
-          } else if (subscription.status) {
-            setSubscriptionText(`Inactive (${subscription.status})`);
-          } else {
-            setSubscriptionText("No active subscription");
-          }
+          const nextSubscription: SubscriptionState = {
+            isSubscribed: Boolean(payload.subscription?.is_subscribed),
+            status: payload.subscription?.status ? String(payload.subscription.status) : null,
+            agents:
+              typeof payload.subscription?.agents === "number" ? payload.subscription.agents : null,
+            currentPeriodEnd: payload.subscription?.current_period_end
+              ? String(payload.subscription.current_period_end)
+              : null,
+            cancelAtPeriodEnd: Boolean(payload.subscription?.cancel_at_period_end)
+          };
+          setSubscription(nextSubscription);
+          setSubscriptionText(getSubscriptionText(nextSubscription));
         }
       } catch (loadError) {
         if (mounted) {
@@ -97,6 +126,53 @@ export default function ProfilePage() {
     }
   };
 
+  const onCancelSubscription = async () => {
+    if (isCancelling || !subscription?.isSubscribed || subscription.cancelAtPeriodEnd) {
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "Cancel subscription at the end of the current billing period?"
+    );
+    if (!confirmed) {
+      return;
+    }
+
+    setError(null);
+    setSuccess(null);
+    setIsCancelling(true);
+    try {
+      const response = await fetch("/api/billing/cancel", { method: "POST" });
+      const payload = (await response.json().catch(() => ({}))) as {
+        error?: string;
+        status?: string;
+        cancel_at_period_end?: boolean;
+        current_period_end?: string | null;
+      };
+      if (!response.ok) {
+        throw new Error(payload.error ?? "Unable to cancel subscription.");
+      }
+
+      const nextSubscription: SubscriptionState = {
+        isSubscribed: subscription.isSubscribed,
+        status: payload.status ? String(payload.status) : subscription.status,
+        agents: subscription.agents,
+        currentPeriodEnd: payload.current_period_end
+          ? String(payload.current_period_end)
+          : subscription.currentPeriodEnd,
+        cancelAtPeriodEnd: Boolean(payload.cancel_at_period_end)
+      };
+      setSubscription(nextSubscription);
+      setSubscriptionText(getSubscriptionText(nextSubscription));
+      setSuccess("Subscription cancellation is scheduled for period end.");
+    } catch (cancelError) {
+      const message = cancelError instanceof Error ? cancelError.message : "Unable to cancel subscription.";
+      setError(message);
+    } finally {
+      setIsCancelling(false);
+    }
+  };
+
   return (
     <main className="relative min-h-screen overflow-hidden bg-slate-950 text-white">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(45,212,191,0.2),transparent_45%),radial-gradient(circle_at_80%_10%,rgba(56,189,248,0.18),transparent_40%),linear-gradient(180deg,#020617_0%,#0b1120_45%,#111827_100%)]" />
@@ -133,6 +209,11 @@ export default function ProfilePage() {
             <div>
               <p className="text-xs uppercase tracking-[0.15em] text-slate-400">Subscription</p>
               <p className="mt-1 text-sm font-semibold text-white">{subscriptionText}</p>
+              {subscription?.isSubscribed && subscription.cancelAtPeriodEnd && (
+                <p className="mt-2 text-xs text-amber-300">
+                  Cancellation will take effect at the end of your current period.
+                </p>
+              )}
             </div>
           </div>
 
@@ -151,9 +232,20 @@ export default function ProfilePage() {
           {error && <p className="mt-4 text-sm text-rose-300">{error}</p>}
           {success && <p className="mt-4 text-sm text-emerald-300">{success}</p>}
 
+          {subscription?.isSubscribed && !subscription.cancelAtPeriodEnd && (
+            <button
+              type="button"
+              onClick={onCancelSubscription}
+              disabled={isLoading || isSaving || isCancelling}
+              className="mt-6 w-full rounded-xl border border-rose-400/40 bg-rose-500/10 px-5 py-3 text-sm font-semibold text-rose-200 transition hover:bg-rose-500/20 disabled:opacity-60"
+            >
+              {isCancelling ? "Cancelling..." : "Cancel Subscription"}
+            </button>
+          )}
+
           <button
             type="submit"
-            disabled={isLoading || isSaving}
+            disabled={isLoading || isSaving || isCancelling}
             className="mt-6 w-full rounded-xl bg-teal px-5 py-3 text-sm font-bold text-ink transition hover:opacity-90 disabled:opacity-60"
           >
             {isSaving ? "Saving..." : "Save"}
