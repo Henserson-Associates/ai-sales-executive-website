@@ -1,16 +1,71 @@
 import { NextResponse } from "next/server";
-import { getSessionFromCookie } from "../../../lib/auth-session";
+import {
+  type AppSessionClaims,
+  getSessionFromCookie,
+  setSessionCookie,
+  signSessionToken
+} from "../../../lib/auth-session";
 import { createServerSupabase } from "../../../lib/supabase-admin";
 
 export const runtime = "nodejs";
 
+async function promotePendingSessionIfActivated(input: {
+  session: ReturnType<typeof getSessionFromCookie>;
+  supabase: ReturnType<typeof createServerSupabase>;
+}): Promise<AppSessionClaims | null> {
+  const { session, supabase } = input;
+  if (!session || session.session_type !== "pending") {
+    return null;
+  }
+
+  const pendingResult = await supabase
+    .from("pending_signups")
+    .select("email, status, client_id")
+    .eq("id", session.pending_signup_id)
+    .maybeSingle();
+
+  if (pendingResult.error || !pendingResult.data) {
+    return null;
+  }
+
+  if (pendingResult.data.status !== "activated" || !pendingResult.data.client_id) {
+    return null;
+  }
+
+  const appUser = await supabase
+    .from("app_users")
+    .select("id, client_id, email, role, is_active, created_at")
+    .eq("client_id", pendingResult.data.client_id)
+    .ilike("email", String(pendingResult.data.email ?? session.email))
+    .eq("is_active", true)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (appUser.error || !appUser.data?.id) {
+    return null;
+  }
+
+  return {
+    session_type: "app",
+    email: appUser.data.email,
+    user_id: appUser.data.id,
+    client_id: appUser.data.client_id,
+    role: appUser.data.role
+  };
+}
+
 export async function GET() {
-  const session = getSessionFromCookie();
+  let session = getSessionFromCookie();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
 
   const supabase = createServerSupabase();
+  const promotedSession = await promotePendingSessionIfActivated({ session, supabase });
+  if (promotedSession) {
+    session = promotedSession;
+  }
 
   if (session.session_type === "app") {
     const clientResult = await supabase
@@ -23,7 +78,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unable to load profile." }, { status: 500 });
     }
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       session_type: "app",
       email: session.email,
       user_id: session.user_id,
@@ -32,6 +87,12 @@ export async function GET() {
       company_name: clientResult.data?.name ?? null,
       account_name: clientResult.data?.name ?? null
     });
+
+    if (promotedSession) {
+      setSessionCookie(response, signSessionToken(promotedSession));
+    }
+
+    return response;
   }
 
   const pendingResult = await supabase
