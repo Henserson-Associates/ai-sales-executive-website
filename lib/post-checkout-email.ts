@@ -13,6 +13,21 @@ function getSupportEmail(): string {
   return configured || "sam@leadnexa.ai";
 }
 
+function getTeamNotificationRecipients(): string[] {
+  const configured = (process.env.TEAM_PURCHASE_NOTIFICATION_EMAILS ?? "").trim();
+  const fallback = [
+    "sam@leadnexa.ai",
+    "dave@leadnexa.ai",
+    "shannon@leadnexa.ai",
+    "tim@leadnexa.ai"
+  ];
+  const source = configured ? configured.split(",") : fallback;
+  const normalized = source
+    .map((value) => value.trim().toLowerCase())
+    .filter((value) => value.length > 0);
+  return Array.from(new Set(normalized));
+}
+
 function formatPeriodEnd(value: string | null): string {
   if (!value) {
     return "your next billing cycle date";
@@ -78,9 +93,7 @@ export async function sendPostCheckoutConfirmationEmail(
     recipient = String(fallbackUser.data?.email ?? "").trim();
   }
 
-  if (!recipient) {
-    return;
-  }
+  const customerRecipient = recipient || "unknown";
 
   const accountName =
     resolvedClient?.data?.name?.trim() ||
@@ -90,6 +103,7 @@ export async function sendPostCheckoutConfirmationEmail(
   const periodEnd = formatPeriodEnd(row.current_period_end ?? null);
   const onboardingUrl = "https://cal.com/team/leadnexa/on-boarding-meeting";
   const supportEmail = getSupportEmail();
+  const teamRecipients = getTeamNotificationRecipients();
 
   const subject = "LeadNexa payment confirmed - next steps";
   const html = [
@@ -120,12 +134,51 @@ export async function sendPostCheckoutConfirmationEmail(
     `Support: ${supportEmail}`
   ].join("\n");
 
-  await sendEmail({
-    to: recipient,
-    subject,
-    html,
-    text
-  });
+  if (recipient) {
+    await sendEmail({
+      to: recipient,
+      subject,
+      html,
+      text
+    });
+  }
+
+  if (teamRecipients.length > 0) {
+    const internalSubject = `New purchase confirmed - ${accountName}`;
+    const internalHtml = [
+      "<div style=\"font-family:Arial,Helvetica,sans-serif;line-height:1.6;color:#0f172a;max-width:620px;\">",
+      "<h2 style=\"margin:0 0 12px 0;\">New LeadNexa purchase confirmed</h2>",
+      `<p style=\"margin:0 0 8px 0;\"><strong>Customer:</strong> ${accountName}</p>`,
+      `<p style=\"margin:0 0 8px 0;\"><strong>Email:</strong> ${customerRecipient}</p>`,
+      `<p style=\"margin:0 0 8px 0;\"><strong>Plan:</strong> ${row.agents} agent(s), ${String(row.currency ?? "usd").toUpperCase()}</p>`,
+      `<p style=\"margin:0 0 8px 0;\"><strong>Current period end:</strong> ${periodEnd}</p>`,
+      `<p style=\"margin:0 0 8px 0;\"><strong>Client ID:</strong> ${clientId || "unknown"}</p>`,
+      `<p style=\"margin:0 0 8px 0;\"><strong>Checkout Session:</strong> ${input.checkoutSessionId}</p>`,
+      "<p style=\"margin:0;\">Customer should be asked to book onboarding: <a href=\"https://cal.com/team/leadnexa/on-boarding-meeting\" style=\"color:#0ea5e9;\">https://cal.com/team/leadnexa/on-boarding-meeting</a></p>",
+      "</div>"
+    ].join("");
+    const internalText = [
+      "New LeadNexa purchase confirmed.",
+      `Customer: ${accountName}`,
+      `Email: ${customerRecipient}`,
+      `Plan: ${row.agents} agent(s), ${String(row.currency ?? "usd").toUpperCase()}`,
+      `Current period end: ${periodEnd}`,
+      `Client ID: ${clientId || "unknown"}`,
+      `Checkout Session: ${input.checkoutSessionId}`,
+      "Onboarding booking link: https://cal.com/team/leadnexa/on-boarding-meeting"
+    ].join("\n");
+
+    await Promise.all(
+      teamRecipients.map((teamEmail) =>
+        sendEmail({
+          to: teamEmail,
+          subject: internalSubject,
+          html: internalHtml,
+          text: internalText
+        })
+      )
+    );
+  }
 
   const markSent = await supabase
     .from("client_subscriptions")
