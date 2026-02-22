@@ -216,37 +216,48 @@ function getInitialAgentCount(): number {
 
 // --- Components ---
 
-const TrustedLogos = () => (
-  <div className="py-16 border-y border-white/5 bg-white/[0.02] overflow-hidden">
-    <p className="text-center text-xs uppercase tracking-[0.4em] text-white/30 mb-10 font-medium">
-      Trusted by Modern B2B Revenue Teams
-    </p>
-    <div className="flex w-max">
-      <div className="flex animate-marquee space-x-16 items-center px-8">
-        {["B2B SAAS", "REVOPS CLOUD", "PIPELINE LABS", "NEXUS DATA", "GLOBAL SYSTEMS", "GROWTHFUEL", "QUANTUM"]
-          .map((logo) => (
-            <span
-              key={logo}
-              className="text-2xl font-bold text-white/20 hover:text-white/40 transition-colors cursor-default"
-            >
-              {logo}
-            </span>
-          ))}
+const clientLogos = [
+  { name: "Valencia", src: "/Valencia_Logo_2025.avif" },
+  { name: "Henderson Associates", src: "/henderson-logo.webp" },
+  { name: "Finn Form", src: "/Finn_Form_Logo.png" },
+  { name: "Kis Holdings", src: "/Kis_holdings.png" },
+  { name: "Steamoji", src: "/steamoji_logo.png" },
+  { name: "Vesta", src: "/Vesta_logo_new_color_on_transparent_with_Canada_flag.avif" },
+];
+
+const TrustedLogos = () => {
+  return (
+    <section className="relative w-full border-y border-white/5 py-16 overflow-hidden">
+      {/* Header same */}
+      <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 px-4 text-center">
+        <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl md:text-[2.1rem]">
+          The B2B growth teams your prospects already trust.
+        </h2>
+        <p className="text-base text-white/60">
+          Used by revenue, marketing, and founder-led teams in North America and beyond.
+        </p>
       </div>
-      <div className="flex animate-marquee space-x-16 items-center px-8">
-        {["B2B SAAS", "REVOPS CLOUD", "PIPELINE LABS", "NEXUS DATA", "GLOBAL SYSTEMS", "GROWTHFUEL", "QUANTUM"]
-          .map((logo) => (
-            <span
-              key={logo + "_clone"}
-              className="text-2xl font-bold text-white/20 hover:text-white/40 transition-colors cursor-default"
-            >
-              {logo}
-            </span>
+      <div className="mt-10 [mask-image:linear-gradient(to_right,transparent,black_72px,black_calc(100%-72px),transparent)]">
+        <div className="w-max whitespace-nowrap animate-marquee-infinite flex items-center">
+          {/* 10x duplication = appears infinite */}
+          {Array.from({ length: 10 }, (_, i) => (
+            <div key={`track-${i}`} className="inline-flex items-center gap-12 px-12">
+              {clientLogos.map((logo, j) => (
+                <div
+                  key={`${logo.name}-${i}-${j}`}
+                  className="relative h-16 w-52 shrink-0 md:h-20 md:w-64 mx-4"
+                >
+                  <Image src={logo.src} alt={`${logo.name} logo`} fill className="object-contain" />
+                </div>
+              ))}
+            </div>
           ))}
+        </div>
       </div>
-    </div>
-  </div>
-);
+    </section>
+  );
+};
+
 
 const UIMockup = () => (
   <div className="relative space-y-6">
@@ -392,7 +403,6 @@ export default function HomePage() {
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const accountMenuRef = useRef<HTMLDivElement | null>(null);
   const [agentCount, setAgentCount] = useState<number>(getInitialAgentCount);
-  const showTrustedLogos = process.env.NEXT_PUBLIC_SHOW_TRUSTED_LOGOS === "true";
   const showIntegrations = process.env.NEXT_PUBLIC_SHOW_INTEGRATIONS === "true";
   const dashboardUrl = (process.env.NEXT_PUBLIC_APP_URL ?? "https://app.leadnexa.ai").replace(/\/$/, "");
 
@@ -820,7 +830,7 @@ export default function HomePage() {
           </motion.section>
 
           <div className="mt-6 md:mt-10">
-            {showTrustedLogos && <TrustedLogos />}
+            <TrustedLogos />
           </div>
 
           {/* Comparison: AI Agents vs Traditional SDRs */}
