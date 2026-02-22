@@ -219,7 +219,7 @@ function getInitialAgentCount(): number {
 const clientLogos = [
   { name: "Valencia", src: "/Valencia_Logo_2025.avif" },
   { name: "Henderson Associates", src: "/henderson-logo.webp" },
-  { name: "Finn Form", src: "/Finn_Form_Logo.png" },
+  { name: "Finn Form", src: "/Finn_and_Form_Logo.svg" },
   { name: "Kis Holdings", src: "/Kis_holdings.png" },
   { name: "Steamoji", src: "/steamoji_logo.png" },
   { name: "Vesta", src: "/Vesta_logo_new_color_on_transparent_with_Canada_flag.avif" },
