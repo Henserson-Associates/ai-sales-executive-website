@@ -1023,7 +1023,7 @@ export default function HomePage() {
                 </div>
                 <div>
                   <h5 className="text-white font-bold mb-6">Contact</h5>
-                  <div className="space-y-5 text-sm text-white/70">
+                  <div className="space-y-5 text-sm text-white/40">
                     <a
                       href="mailto:info@leadnexa.ai"
                       className="group flex items-center gap-4 transition-colors"
