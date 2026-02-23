@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ShieldCheck } from "lucide-react";
+import SiteHeader from "../components/site-header";
 
 const motionProps = {
   initial: { opacity: 0, y: 24 },
@@ -11,26 +11,15 @@ const motionProps = {
 };
 
 export default function PrivacyPage() {
+  const showIntegrations = process.env.NEXT_PUBLIC_SHOW_INTEGRATIONS === "true";
+
   return (
     <div className="min-h-screen page-shell">
       <div className="relative z-10">
         <div className="pointer-events-none absolute -top-40 right-12 h-72 w-72 rounded-full bg-electric/15 blur-[140px]" />
         <div className="pointer-events-none absolute top-28 -left-24 h-72 w-72 rounded-full bg-teal/20 blur-[140px]" />
 
-        <header className="sticky top-0 z-40 border-b border-white/5 bg-ink/70 backdrop-blur">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-            <div className="flex items-center gap-3 text-lg font-semibold tracking-tight">
-              <ShieldCheck className="h-5 w-5 text-teal" />
-              AI Sales Executive
-            </div>
-            <a
-              href="/"
-              className="rounded-full border border-white/15 px-5 py-2 text-sm font-semibold text-white/80 transition hover:border-white/30 hover:text-white"
-            >
-              Back to Home
-            </a>
-          </div>
-        </header>
+        <SiteHeader anchorPrefix="/" loginNext="/privacy" showIntegrations={showIntegrations} />
 
         <main className="mx-auto max-w-6xl px-6 py-24">
           <motion.section {...motionProps} className="grid gap-12 lg:grid-cols-[1fr_0.35fr]">
@@ -43,8 +32,9 @@ export default function PrivacyPage() {
                   How We Handle Your Data
                 </h1>
                 <p className="text-base">
-                  We build AI Sales Executive to power outbound outreach while respecting your data.
-                  This policy explains what we collect, how we use it, and the choices you have.
+                  LeadNexa powers AI sales agents for Email and LinkedIn outbound while respecting
+                  your data. This policy explains what we collect, how we use it, and the choices
+                  you have.
                 </p>
               </header>
 
@@ -52,16 +42,18 @@ export default function PrivacyPage() {
                 <h2 className="text-2xl font-semibold text-white">Information we collect</h2>
                 <p>
                   We collect account details, billing information, and configuration inputs you
-                  provide (such as ICP, offers, and messaging guidelines). We also collect product
-                  usage data to improve performance and reliability.
+                  provide (such as ICP, offers, messaging guidelines, and campaign settings). We
+                  also collect product usage and outreach performance data to improve reliability,
+                  deliverability, and service quality.
                 </p>
               </section>
 
               <section className="space-y-4 border-t border-white/10 pt-8">
                 <h2 className="text-2xl font-semibold text-white">How we use data</h2>
                 <p>
-                  We use data to deliver services, personalize outreach workflows, provide support,
-                  and improve the platform. We do not sell your data to third parties.
+                  We use data to run and optimize your multi-channel outbound workflows, provide
+                  support, and improve the LeadNexa platform. We do not sell your data to third
+                  parties.
                 </p>
               </section>
 
@@ -88,11 +80,11 @@ export default function PrivacyPage() {
                 <ul className="mt-4 space-y-3">
                   <li className="flex items-start gap-3">
                     <span className="mt-1 h-2 w-2 rounded-full bg-teal" />
-                    We collect data you provide and usage data to run the service.
+                    We collect the data you provide and product usage data to operate the service.
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="mt-1 h-2 w-2 rounded-full bg-teal" />
-                    We use data for delivery, support, and product improvement.
+                    We use data to run and improve Email + LinkedIn outbound workflows.
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="mt-1 h-2 w-2 rounded-full bg-teal" />
@@ -105,8 +97,8 @@ export default function PrivacyPage() {
                 <p className="text-xs uppercase tracking-[0.3em] text-white/50">Contact</p>
                 <p className="mt-4">
                   Email us at{" "}
-                  <a className="text-teal hover:text-teal/80" href="mailto:privacy@aisalesexec.com">
-                    privacy@aisalesexec.com
+                  <a className="text-teal hover:text-teal/80" href="mailto:info@leadnexa.ai">
+                    info@leadnexa.ai
                   </a>
                   .
                 </p>
