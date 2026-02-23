@@ -7,6 +7,7 @@ import {
 } from "../../../../lib/subscription-records";
 import { activatePendingSignupFromCheckout } from "../../../../lib/pending-signups";
 import { sendPostCheckoutConfirmationEmail } from "../../../../lib/post-checkout-email";
+import { provisionHeyReachWebhooks } from "../../../../lib/heyreach-provisioning";
 import { stripe } from "../../../../lib/stripe";
 
 export const runtime = "nodejs";
@@ -70,7 +71,7 @@ export async function POST(request: Request) {
         expand: ["items.data.price"]
       });
 
-      await insertClientSubscriptionFromCheckout({
+      const resolvedClientId = await insertClientSubscriptionFromCheckout({
         checkoutSessionId: session.id,
         explicitClientId,
         customerName,
@@ -79,9 +80,18 @@ export async function POST(request: Request) {
         stripeSubscription: subscription
       });
 
+      try {
+        await provisionHeyReachWebhooks(resolvedClientId);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "unknown error";
+        console.error(
+          `[stripe-webhook] HeyReach provisioning failed for client ${resolvedClientId}: ${message}`
+        );
+      }
+
       await sendPostCheckoutConfirmationEmail({
         checkoutSessionId: session.id,
-        clientId: explicitClientId || undefined,
+        clientId: resolvedClientId,
         customerEmail,
         customerName
       });

@@ -48,13 +48,13 @@ export async function insertClientSubscriptionFromCheckout(input: {
   customerEmail?: string;
   stripeCustomerId: string;
   stripeSubscription: Stripe.Subscription;
-}): Promise<void> {
+}): Promise<string> {
   const supabase = getSupabaseAdmin();
 
   // Idempotency guard: if checkout session already persisted, do nothing.
   const existing = await supabase
     .from("client_subscriptions")
-    .select("id")
+    .select("id, client_id")
     .eq("stripe_checkout_session_id", input.checkoutSessionId)
     .maybeSingle();
 
@@ -62,8 +62,8 @@ export async function insertClientSubscriptionFromCheckout(input: {
     throw new Error(`Failed to check existing subscription row: ${existing.error.message}`);
   }
 
-  if (existing.data) {
-    return;
+  if (existing.data?.client_id) {
+    return String(existing.data.client_id);
   }
 
   const clientId = await resolveClientId({
@@ -98,13 +98,30 @@ export async function insertClientSubscriptionFromCheckout(input: {
   const insertResult = await supabase.from("client_subscriptions").insert(payload);
 
   if (!insertResult.error) {
-    return;
+    return clientId;
   }
 
   // Safe retry: concurrent duplicate webhook may hit unique constraint after pre-check.
   const isUniqueViolation = insertResult.error.code === "23505";
   if (isUniqueViolation) {
-    return;
+    const existingAfterConflict = await supabase
+      .from("client_subscriptions")
+      .select("client_id")
+      .eq("stripe_checkout_session_id", input.checkoutSessionId)
+      .maybeSingle();
+
+    if (existingAfterConflict.error) {
+      throw new Error(
+        `Failed to resolve subscription row after unique violation: ${existingAfterConflict.error.message}`
+      );
+    }
+
+    const conflictClientId = String(existingAfterConflict.data?.client_id ?? "").trim();
+    if (conflictClientId) {
+      return conflictClientId;
+    }
+
+    throw new Error("Subscription row exists but client_id is missing after unique violation.");
   }
 
   throw new Error(`Failed to insert client_subscriptions row: ${insertResult.error.message}`);
