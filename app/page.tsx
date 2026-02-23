@@ -1022,24 +1022,27 @@ export default function HomePage() {
                   </ul>
                 </div>
                 <div>
-                  <h5 className="text-white font-bold mb-6">Company</h5>
-                  <ul className="space-y-4 text-sm text-white/40">
-                    <li>
-                      <a href="#" className="hover:text-teal transition-colors">
-                        About
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="hover:text-teal transition-colors">
-                        Careers
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" className="hover:text-teal transition-colors">
-                        Contact
-                      </a>
-                    </li>
-                  </ul>
+                  <h5 className="text-white font-bold mb-6">Contact</h5>
+                  <div className="space-y-5 text-sm text-white/70">
+                    <a
+                      href="mailto:info@leadnexa.ai"
+                      className="group flex items-center gap-4 transition-colors"
+                    >
+                      <Mail className="h-5 w-5 text-teal group-hover:text-electric" />
+                      <span className="group-hover:text-white">info@leadnexa.ai</span>
+                    </a>
+                    <a
+                      href="https://www.linkedin.com/company/leadnexa-ai/"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group flex items-center gap-4 transition-colors"
+                    >
+                      <span className="inline-flex h-5 w-5 items-center justify-center rounded-[4px] bg-teal text-[11px] font-black leading-none text-ink group-hover:bg-electric">
+                        in
+                      </span>
+                      <span className="group-hover:text-white">LeadNexa AI</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
