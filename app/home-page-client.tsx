@@ -473,8 +473,8 @@ export default function HomePage() {
                 </span>
               </h1>
               <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/60 md:text-xl">
-                We help B2B teams generate qualified leads with AI-powered sales reps that run cold email and
-                LinkedIn outreach end-to-end.
+                LeadNexa.ai helps B2B teams generate qualified leads with AI-powered sales reps that run cold email
+                and LinkedIn outreach end-to-end.
               </p>
               <div className="mt-10 grid gap-3 text-sm text-white/50">
                 <div className="flex items-center gap-2">

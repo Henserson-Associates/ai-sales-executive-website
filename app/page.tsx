@@ -3,9 +3,9 @@ import HomePageClient from "./home-page-client";
 import { absoluteUrl } from "../lib/seo";
 
 export const metadata: Metadata = {
-  title: "AI Sales Agents for Scalable B2B Lead Generation",
+  title: "LeadNexa.ai - AI Sales Agents for Scalable B2B Lead Generation",
   description:
-    "Scale B2B pipeline with AI sales agents running cold email and LinkedIn outreach end-to-end.",
+    "LeadNexa.ai helps B2B teams scale pipeline with AI sales agents running cold email and LinkedIn outreach end-to-end.",
   alternates: {
     canonical: "/"
   }
