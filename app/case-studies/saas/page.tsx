@@ -1,10 +1,45 @@
 import { ArrowLeft, Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
+import { absoluteUrl } from "../../../lib/seo";
+
+export const metadata: Metadata = {
+  title: "B2B SaaS Case Study",
+  description: "How an early-stage SaaS team generated 38 qualified demos in 90 days with AI sales agents.",
+  alternates: {
+    canonical: "/case-studies/saas"
+  }
+};
 
 export default function SaasCaseStudyPage() {
+  const caseStudySchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "B2B SaaS - From Founder-Led Sales to Scalable Outbound",
+    description:
+      "How an early-stage SaaS company used Leadnexa AI Agents to generate a predictable flow of qualified demos.",
+    author: {
+      "@type": "Organization",
+      name: "LeadNexa.ai"
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "LeadNexa.ai",
+      logo: {
+        "@type": "ImageObject",
+        url: absoluteUrl("/logo.png")
+      }
+    },
+    mainEntityOfPage: absoluteUrl("/case-studies/saas")
+  };
+
   return (
     <div className="min-h-screen page-shell">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudySchema) }}
+      />
       <header className="sticky top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center transition-opacity hover:opacity-90">

@@ -1,4 +1,17 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Checkout Canceled",
+  description: "Your checkout was canceled and no payment was made.",
+  robots: {
+    index: false,
+    follow: false
+  },
+  alternates: {
+    canonical: "/checkout/cancel"
+  }
+};
 
 type CheckoutCancelPageProps = {
   searchParams?: {

@@ -1,4 +1,17 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Checkout Success",
+  description: "Your LeadNexa subscription payment was successful.",
+  robots: {
+    index: false,
+    follow: false
+  },
+  alternates: {
+    canonical: "/success"
+  }
+};
 
 export default function SuccessPage() {
   return (

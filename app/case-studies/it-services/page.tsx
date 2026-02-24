@@ -1,10 +1,45 @@
 import { ArrowLeft, Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
+import { absoluteUrl } from "../../../lib/seo";
+
+export const metadata: Metadata = {
+  title: "IT Services Case Study",
+  description: "How an IT services provider achieved 2.5x more qualified meetings in 90 days.",
+  alternates: {
+    canonical: "/case-studies/it-services"
+  }
+};
 
 export default function ItServicesCaseStudyPage() {
+  const caseStudySchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "IT Services - Filling a Thin Pipeline With AI Agents",
+    description:
+      "How an IT services provider used Leadnexa AI Agents to build a healthier top of funnel.",
+    author: {
+      "@type": "Organization",
+      name: "LeadNexa.ai"
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "LeadNexa.ai",
+      logo: {
+        "@type": "ImageObject",
+        url: absoluteUrl("/logo.png")
+      }
+    },
+    mainEntityOfPage: absoluteUrl("/case-studies/it-services")
+  };
+
   return (
     <div className="min-h-screen page-shell">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudySchema) }}
+      />
       <header className="sticky top-0 z-50 border-b border-white/5 bg-ink/70 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center transition-opacity hover:opacity-90">

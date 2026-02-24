@@ -1,5 +1,14 @@
 import { ArrowRight, CircleHelp, Sparkles, Target } from "lucide-react";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Talk to Our Team",
+  description: "Book a call to review your outbound strategy and AI sales agent rollout plan.",
+  alternates: {
+    canonical: "/talk-to-our-team"
+  }
+};
 
 const calEmbedUrl = process.env.NEXT_PUBLIC_CAL_EMBED_URL;
 const showIntegrations = process.env.NEXT_PUBLIC_SHOW_INTEGRATIONS === "true";
