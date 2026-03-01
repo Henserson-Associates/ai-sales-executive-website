@@ -218,38 +218,62 @@ const clientLogos = [
   { name: "Valencia", src: "/Valencia_Logo_2025.avif" },
   { name: "Henderson Associates", src: "/henderson-logo.webp" },
   { name: "Finn Form", src: "/Finn_and_Form_Logo.svg" },
-  { name: "Kis Holdings", src: "/Kis_holdings.png" },
   { name: "Steamoji", src: "/steamoji_logo.png" },
-  { name: "Vesta", src: "/Vesta_logo_new_color_on_transparent_with_Canada_flag.avif" },
+  { name: "Vesta", src: "/Vesta_logo_new_color_on_transparent_with_Canada_flag.png" },
 ];
 
 const TrustedLogos = () => {
   return (
     <section className="relative w-full border-y border-white/5 py-16 overflow-hidden">
-      {/* Header same */}
-      <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 px-4 text-center">
-        <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl md:text-[2.1rem]">
-          The B2B growth teams your prospects already trust.
-        </h2>
-        <p className="text-base text-white/60">
-          Used by revenue, marketing, and founder-led teams in North America and beyond.
-        </p>
-      </div>
-      <div className="mt-10 [mask-image:linear-gradient(to_right,transparent,black_72px,black_calc(100%-72px),transparent)]">
-        <div className="w-max whitespace-nowrap animate-marquee-infinite flex items-center">
-          {/* 10x duplication = appears infinite */}
-          {Array.from({ length: 10 }, (_, i) => (
-            <div key={`track-${i}`} className="inline-flex items-center gap-12 px-12">
-              {clientLogos.map((logo, j) => (
-                <div
-                  key={`${logo.name}-${i}-${j}`}
-                  className="relative h-16 w-52 shrink-0 md:h-20 md:w-64 mx-4"
-                >
-                  <Image src={logo.src} alt={`${logo.name} logo`} fill className="object-contain" />
+      {/* Subtle background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-teal/[0.02] via-transparent to-electric/[0.02] pointer-events-none" />
+      
+      {/* Decorative glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] bg-teal/5 blur-[100px] rounded-full pointer-events-none" />
+      
+      <div className="relative z-10">
+        <div className="mx-auto flex max-w-5xl flex-col items-center gap-6 px-4 text-center mb-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-teal/20 bg-teal/5 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.3em] text-teal mb-2">
+            <Star className="w-3 h-3 fill-teal" />
+            Trusted By
+          </div>
+          <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl md:text-[2.1rem]">
+            The B2B growth teams your prospects already trust.
+          </h2>
+          <p className="text-base text-white/60">
+            Used by revenue, marketing, and founder-led teams in North America and beyond.
+          </p>
+        </div>
+        
+        <div className="mt-12 relative">
+          {/* Enhanced mask with smoother gradient */}
+          <div className="[mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+            <div className="w-max whitespace-nowrap animate-marquee-infinite flex items-center">
+              {Array.from({ length: 10 }, (_, i) => (
+                <div key={`track-${i}`} className="inline-flex items-center gap-16 px-8">
+                  {clientLogos.map((logo, j) => (
+                    <div
+                      key={`${logo.name}-${i}-${j}`}
+                      className="relative h-20 w-64 shrink-0 md:h-24 md:w-80 mx-4"
+                    >
+                      {/* Logo container */}
+                      <div className="relative h-full w-full rounded-2xl p-4">
+                        <Image 
+                          src={logo.src} 
+                          alt={`${logo.name} logo`} 
+                          fill 
+                          className="object-contain p-2" 
+                          quality={100}
+                          priority={false}
+                          style={{ imageRendering: 'crisp-edges' }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </section>
